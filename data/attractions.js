@@ -1,11 +1,11 @@
-const ATTRACTIONS = [
+export const ATTRACTIONS = [
   {
     emoji: '🌸',
     id: 1,
     name: "Bellagio Conservatory & Botanical Gardens",
     location: {
       lat: "36.1126° N",
-      long: "115.1767° W"
+      long: "-115.1767° W"
     },
     images: [
       "bellagio-conservatory-spring.jpg",
@@ -21,7 +21,7 @@ const ATTRACTIONS = [
     name: "Fountains of Bellagio",
     location: {
       lat: "36.1129° N", 
-      long: "115.1765° W"
+      long: "-115.1765° W"
     },
     images: [
       "bellagio-fountains-night.jpg",
@@ -37,7 +37,7 @@ const ATTRACTIONS = [
     name: "High Roller Observation Wheel",
     location: {
       lat: "36.1173° N",
-      long: "115.1711° W"
+      long: "-115.1711° W"
     },
     images: [
       "high-roller-night.jpg",
@@ -53,7 +53,7 @@ const ATTRACTIONS = [
     name: "Welcome to Fabulous Las Vegas Sign",
     location: {
       lat: "36.0814° N",
-      long: "115.1728° W"
+      long: "-115.1728° W"
     },
     images: [
       "vegas-sign-day.jpg",
@@ -69,7 +69,7 @@ const ATTRACTIONS = [
     name: "Fremont Street Experience",
     location: {
       lat: "36.1699° N",
-      long: "115.1398° W"
+      long: "-115.1398° W"
     },
     images: [
       "fremont-lights.jpg",
@@ -85,7 +85,7 @@ const ATTRACTIONS = [
     name: "The Venetian Gondola Rides",
     location: {
       lat: "36.1211° N",
-      long: "115.1696° W"
+      long: "-115.1696° W"
     },
     images: [
       "venetian-canals.jpg",
@@ -101,7 +101,7 @@ const ATTRACTIONS = [
     name: "Stratosphere Tower Thrill Rides",
     location: {
       lat: "36.1475° N",
-      long: "115.1566° W"
+      long: "-115.1566° W"
     },
     images: [
       "strat-tower.jpg",
@@ -117,7 +117,7 @@ const ATTRACTIONS = [
     name: "Red Rock Canyon",
     location: {
       lat: "36.1311° N",
-      long: "115.4262° W"
+      long: "-115.4262° W"
     },
     images: [
       "red-rock-vista.jpg",
@@ -133,7 +133,7 @@ const ATTRACTIONS = [
     name: "Mob Museum",
     location: {
       lat: "36.1735° N",
-      long: "115.1405° W"
+      long: "-115.1405° W"
     },
     images: [
       "mob-museum-exterior.jpg",
@@ -149,7 +149,7 @@ const ATTRACTIONS = [
     name: "Paris Las Vegas Eiffel Tower Experience",
     location: {
       lat: "36.1125° N",
-      long: "115.1707° W"
+      long: "-115.1707° W"
     },
     images: [
       "paris-tower.jpg",
@@ -165,7 +165,7 @@ const ATTRACTIONS = [
     name: "Neon Museum",
     location: {
       lat: "36.1766° N",
-      long: "115.1356° W"
+      long: "-115.1356° W"
     },
     images: [
       "neon-boneyard.jpg",
@@ -181,7 +181,7 @@ const ATTRACTIONS = [
     name: "Caesar's Palace Forum Shops",
     location: {
       lat: "36.1178° N",
-      long: "115.1756° W"
+      long: "-115.1756° W"
     },
     images: [
       "forum-shops.jpg",

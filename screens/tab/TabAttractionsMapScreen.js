@@ -1,38 +1,148 @@
-import { StyleSheet, View, Dimensions, Text } from 'react-native'
-import React from 'react'
-import MapView, {Marker} from 'react-native-maps'
-import { ATTRACTIONS } from '../../data/attractions'
-import { LAS_VEGAS_REGION } from '../../data/initialLocation'
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useState, useRef} from 'react';
+import MapView, {Marker, PROVIDER_DEFAULT, Polyline} from 'react-native-maps';
+import {ATTRACTIONS} from '../../data/attractions';
+import {LAS_VEGAS_REGION} from '../../data/initialLocation';
+
+const TOKEN =
+  'pk.eyJ1IjoidmFjaGVrbWFwMSIsImEiOiJjbTR3cHdkZXgwN2xxMmtyMHpkM3J1Ymc4In0.MQ2PHgJ_geG0AdbhlelR2Q';
 
 const TabAttractionsMapScreen = () => {
-    
-    const handleUserLocationSelect = (event) => {
-        console.log('User point selected:', event.nativeEvent.coordinate);
+
+  const mapRef = useRef(null);
+  const [isRoutingMode, setIsRoutingMode] = useState(false);
+  const [startPoint, setStartPoint] = useState(null);
+  const [endPoint, setEndPoint] = useState(null);
+  const [route, setRoute] = useState(null);
+
+  const handleMapPress = async event => {
+    if (isRoutingMode) {
+      const {coordinate} = event.nativeEvent;
+      console.log('Map pressed in routing mode:', coordinate);
+
+      if (!startPoint) {
+        setStartPoint(coordinate);
+      } else if (!endPoint) {
+        setEndPoint(coordinate);
+        // Once we have both points, fetch the route
+        await fetchRoute(startPoint, coordinate);
       }
-    
+    }
+  };
+
+  const fetchRoute = async (start, end) => {
+    try {
+      // Using MapBox Directions API
+      const response = await fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/walking/${start.longitude},${start.latitude};${end.longitude},${end.latitude}?access_token=${TOKEN}&geometries=geojson`,
+      );
+      const data = await response.json();
+      
+
+      if (data.routes && data.routes[0]) {
+        const routeCoordinates = data.routes[0].geometry.coordinates.map(coord => ({
+          latitude: coord[1],
+          longitude: coord[0],
+        }));
+        console.log('Setting route with coordinates:', routeCoordinates);
+        setRoute(routeCoordinates);
+        
+        // Fit the map to show the entire route
+        if (mapRef.current && routeCoordinates.length > 0) {
+          mapRef.current.fitToCoordinates(
+            [start, end],
+            {
+              edgePadding: {
+                top: 50,
+                right: 50,
+                bottom: 50,
+                left: 50,
+              },
+              animated: true,
+            }
+          );
+        }
+      }
+      
+    } catch (error) {
+      console.error('Error fetching route:', error);
+    }
+  };
+  const startRouting = () => {
+    setIsRoutingMode(true);
+    setStartPoint(null);
+    setEndPoint(null);
+    setRoute(null);
+  };
+
+  const cancelRouting = () => {
+    setIsRoutingMode(false);
+    setStartPoint(null);
+    setEndPoint(null);
+    setRoute(null);
+  };
 
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         style={styles.map}
-        // provider={PROVIDER_DEFAULT}
+        provider={PROVIDER_DEFAULT}
         initialRegion={LAS_VEGAS_REGION}
         showsUserLocation={true}
         showsMyLocationButton={true}
         showsCompass={true}
-        onUserLocationChange={(event) => console.log('User location changed:', event.nativeEvent.coordinate)}
-        // onPress={(event) => console.log('Map pressed:', event.nativeEvent.coordinate)}
-        onPress={(event) => handleUserLocationSelect(event)}
+        onPress={handleMapPress}
         followsUserLocation={true}
         zoomEnabled={true}
-        onPoiClick={(event) => console.log('POI clicked:', event.nativeEvent)}
-        onMarkerPress={(event) => console.log('Marker pressed:', event.nativeEvent)}
-      
-      >
+        onPoiClick={event => console.log('POI clicked:', event.nativeEvent)}
+        onMarkerPress={event =>
+          console.log('Marker pressed:', event.nativeEvent)
+        }>
+        {/* Draw the route first (before markers) */}
+        {route && (
+          <Polyline
+            coordinates={route}
+            strokeColor="#2196F3"
+            strokeWidth={3}
+            zIndex={1}  // Make sure route is visible above the map
+            tappable={true}  // Make route interactive
+            onPress={() => console.log('Route pressed')} // For debugging
+          />
+        )}
+
+        {/* Route markers on top */}
+        {startPoint && (
+          <Marker 
+            coordinate={startPoint} 
+            pinColor="green" 
+            title="Start"
+            zIndex={2}
+          />
+        )}
+        {endPoint && (
+          <Marker 
+            coordinate={endPoint} 
+            pinColor="red" 
+            title="End"
+            zIndex={2}
+          />
+        )}
+
+        {/* Your existing attraction markers */}
         {ATTRACTIONS.map((attraction) => (
           <Marker
             key={attraction.id}
-            coordinate={{latitude: attraction.location.lat, longitude: attraction.location.long}}
+            coordinate={{
+              latitude: Number(attraction.location.lat.split('°')[0]),
+              longitude: -1 * Number(attraction.location.long.split('°')[0])
+            }}
             title={attraction.name}
             description={attraction.description}
           >
@@ -42,11 +152,34 @@ const TabAttractionsMapScreen = () => {
           </Marker>
         ))}
       </MapView>
+      {/* Routing controls */}
+      <View style={styles.buttonContainer}>
+        {!isRoutingMode ? (
+          <TouchableOpacity style={styles.button} onPress={startRouting}>
+            <Text style={styles.buttonText}>Build Route</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.routingControls}>
+            <Text style={styles.routingText}>
+              {!startPoint
+                ? 'Select start point'
+                : !endPoint
+                ? 'Select end point'
+                : 'Route created!'}
+            </Text>
+            <TouchableOpacity
+              style={[styles.button, styles.cancelButton]}
+              onPress={cancelRouting}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
     </View>
-  )
-}
+  );
+};
 
-export default TabAttractionsMapScreen
+export default TabAttractionsMapScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -74,5 +207,45 @@ const styles = StyleSheet.create({
   },
   emoji: {
     fontSize: 20,
-  }
-})
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 20,
+    width: '100%',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#2196F3',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  cancelButton: {
+    backgroundColor: '#FF5252',
+    marginTop: 10,
+  },
+  routingControls: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    padding: 10,
+    borderRadius: 10,
+  },
+  routingText: {
+    marginBottom: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

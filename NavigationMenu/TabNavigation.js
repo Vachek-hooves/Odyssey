@@ -11,11 +11,11 @@ const Tab = createBottomTabNavigator();
 const TabNavigation = () => {
   return (
     <Tab.Navigator screenOptions={{headerShown: false}}>
-      <Tab.Screen name="TabTouristScreen" component={TabTouristScreen} />
       <Tab.Screen
         name="TabAttractionMapScreen"
         component={TabAttractionsMapScreen}
       />
+      <Tab.Screen name="TabTouristScreen" component={TabTouristScreen} />
       {/* <Tab.Screen name="TabHotelsScreen" component={TabHotelsScreen} /> */}
       <Tab.Screen name="TabFavoriteScreen" component={TabFavoriteScreen} />
     </Tab.Navigator>

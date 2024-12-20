@@ -5,8 +5,9 @@ import { ATTRACTIONS } from '../../data/attractions'
 import { LAS_VEGAS_REGION } from '../../data/initialLocation'
 
 const TabAttractionsMapScreen = () => {
+    
     const handleUserLocationSelect = (event) => {
-        console.log('User location selected:', event.nativeEvent.coordinate);
+        console.log('User point selected:', event.nativeEvent.coordinate);
       }
     
 
@@ -20,7 +21,8 @@ const TabAttractionsMapScreen = () => {
         showsMyLocationButton={true}
         showsCompass={true}
         onUserLocationChange={(event) => console.log('User location changed:', event.nativeEvent.coordinate)}
-        onPress={(event) => console.log('Map pressed:', event.nativeEvent.coordinate)}
+        // onPress={(event) => console.log('Map pressed:', event.nativeEvent.coordinate)}
+        onPress={(event) => handleUserLocationSelect(event)}
         followsUserLocation={true}
         zoomEnabled={true}
         onPoiClick={(event) => console.log('POI clicked:', event.nativeEvent)}

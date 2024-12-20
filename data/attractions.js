@@ -1,5 +1,6 @@
 const ATTRACTIONS = [
   {
+    emoji: '🌸',
     id: 1,
     name: "Bellagio Conservatory & Botanical Gardens",
     location: {
@@ -15,6 +16,7 @@ const ATTRACTIONS = [
     rating: 4.8
   },
   {
+    emoji: '⛲',
     id: 2,
     name: "Fountains of Bellagio",
     location: {
@@ -30,6 +32,7 @@ const ATTRACTIONS = [
     rating: 4.9
   },
   {
+    emoji: '🎡',
     id: 3,
     name: "High Roller Observation Wheel",
     location: {
@@ -45,6 +48,7 @@ const ATTRACTIONS = [
     rating: 4.7
   },
   {
+    emoji: '🏙️',
     id: 4,
     name: "Welcome to Fabulous Las Vegas Sign",
     location: {
@@ -60,6 +64,7 @@ const ATTRACTIONS = [
     rating: 4.6
   },
   {
+    emoji: '🌆🚶‍♀️',
     id: 5,
     name: "Fremont Street Experience",
     location: {
@@ -75,6 +80,7 @@ const ATTRACTIONS = [
     rating: 4.5
   },
   {
+    emoji: '🛶',
     id: 6,
     name: "The Venetian Gondola Rides",
     location: {
@@ -90,6 +96,7 @@ const ATTRACTIONS = [
     rating: 4.6
   },
   {
+    emoji: '🏢',
     id: 7,
     name: "Stratosphere Tower Thrill Rides",
     location: {
@@ -105,6 +112,7 @@ const ATTRACTIONS = [
     rating: 4.5
   },
   {
+    emoji: '🪨',
     id: 8,
     name: "Red Rock Canyon",
     location: {
@@ -120,6 +128,7 @@ const ATTRACTIONS = [
     rating: 4.8
   },
   {
+    emoji: '🏛',
     id: 9,
     name: "Mob Museum",
     location: {
@@ -135,6 +144,7 @@ const ATTRACTIONS = [
     rating: 4.7
   },
   {
+    emoji: '🗼',
     id: 10,
     name: "Paris Las Vegas Eiffel Tower Experience",
     location: {
@@ -150,6 +160,7 @@ const ATTRACTIONS = [
     rating: 4.6
   },
   {
+    emoji: ' 🏛',
     id: 11,
     name: "Neon Museum",
     location: {
@@ -165,6 +176,7 @@ const ATTRACTIONS = [
     rating: 4.7
   },
   {
+    emoji: '🛍',
     id: 12,
     name: "Caesar's Palace Forum Shops",
     location: {

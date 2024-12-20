@@ -16,7 +16,7 @@ const TabNavigation = () => {
         name="TabAttractionMapScreen"
         component={TabAttractionsMapScreen}
       />
-      <Tab.Screen name="TabHotelsScreen" component={TabHotelsScreen} />
+      {/* <Tab.Screen name="TabHotelsScreen" component={TabHotelsScreen} /> */}
       <Tab.Screen name="TabFavoriteScreen" component={TabFavoriteScreen} />
     </Tab.Navigator>
   );

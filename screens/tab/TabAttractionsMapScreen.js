@@ -2,14 +2,13 @@ import { StyleSheet, View, Dimensions, Text } from 'react-native'
 import React from 'react'
 import MapView, {Marker} from 'react-native-maps'
 import { ATTRACTIONS } from '../../data/attractions'
+import { LAS_VEGAS_REGION } from '../../data/initialLocation'
+
 const TabAttractionsMapScreen = () => {
-  // Las Vegas coordinates (center of the Strip)
-  const LAS_VEGAS_REGION = {
-    latitude: 36.1147,
-    longitude: -115.1728,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  }
+    const handleUserLocationSelect = (event) => {
+        console.log('User location selected:', event.nativeEvent.coordinate);
+      }
+    
 
   return (
     <View style={styles.container}>
@@ -20,6 +19,13 @@ const TabAttractionsMapScreen = () => {
         showsUserLocation={true}
         showsMyLocationButton={true}
         showsCompass={true}
+        onUserLocationChange={(event) => console.log('User location changed:', event.nativeEvent.coordinate)}
+        onPress={(event) => console.log('Map pressed:', event.nativeEvent.coordinate)}
+        followsUserLocation={true}
+        zoomEnabled={true}
+        onPoiClick={(event) => console.log('POI clicked:', event.nativeEvent)}
+        onMarkerPress={(event) => console.log('Marker pressed:', event.nativeEvent)}
+      
       >
         {ATTRACTIONS.map((attraction) => (
           <Marker

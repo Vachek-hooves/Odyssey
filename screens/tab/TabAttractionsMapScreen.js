@@ -14,7 +14,6 @@ const TOKEN =
   'pk.eyJ1IjoidmFjaGVrbWFwMSIsImEiOiJjbTR3cHdkZXgwN2xxMmtyMHpkM3J1Ymc4In0.MQ2PHgJ_geG0AdbhlelR2Q';
 
 const TabAttractionsMapScreen = () => {
-
   const mapRef = useRef(null);
   const [isRoutingMode, setIsRoutingMode] = useState(false);
   const [startPoint, setStartPoint] = useState(null);
@@ -43,33 +42,30 @@ const TabAttractionsMapScreen = () => {
         `https://api.mapbox.com/directions/v5/mapbox/walking/${start.longitude},${start.latitude};${end.longitude},${end.latitude}?access_token=${TOKEN}&geometries=geojson`,
       );
       const data = await response.json();
-      
 
       if (data.routes && data.routes[0]) {
-        const routeCoordinates = data.routes[0].geometry.coordinates.map(coord => ({
-          latitude: coord[1],
-          longitude: coord[0],
-        }));
+        const routeCoordinates = data.routes[0].geometry.coordinates.map(
+          coord => ({
+            latitude: coord[1],
+            longitude: coord[0],
+          }),
+        );
         console.log('Setting route with coordinates:', routeCoordinates);
         setRoute(routeCoordinates);
-        
+
         // Fit the map to show the entire route
         if (mapRef.current && routeCoordinates.length > 0) {
-          mapRef.current.fitToCoordinates(
-            [start, end],
-            {
-              edgePadding: {
-                top: 50,
-                right: 50,
-                bottom: 50,
-                left: 50,
-              },
-              animated: true,
-            }
-          );
+          mapRef.current.fitToCoordinates([start, end], {
+            edgePadding: {
+              top: 50,
+              right: 50,
+              bottom: 50,
+              left: 50,
+            },
+            animated: true,
+          });
         }
       }
-      
     } catch (error) {
       console.error('Error fetching route:', error);
     }
@@ -111,41 +107,35 @@ const TabAttractionsMapScreen = () => {
             coordinates={route}
             strokeColor="#2196F3"
             strokeWidth={3}
-            zIndex={1}  // Make sure route is visible above the map
-            tappable={true}  // Make route interactive
+            zIndex={1} // Make sure route is visible above the map
+            tappable={true} // Make route interactive
             onPress={() => console.log('Route pressed')} // For debugging
           />
         )}
 
         {/* Route markers on top */}
         {startPoint && (
-          <Marker 
-            coordinate={startPoint} 
-            pinColor="green" 
+          <Marker
+            coordinate={startPoint}
+            pinColor="green"
             title="Start"
             zIndex={2}
           />
         )}
         {endPoint && (
-          <Marker 
-            coordinate={endPoint} 
-            pinColor="red" 
-            title="End"
-            zIndex={2}
-          />
+          <Marker coordinate={endPoint} pinColor="red" title="End" zIndex={2} />
         )}
 
         {/* Your existing attraction markers */}
-        {ATTRACTIONS.map((attraction) => (
+        {ATTRACTIONS.map(attraction => (
           <Marker
             key={attraction.id}
             coordinate={{
-              latitude: Number(attraction.location.lat.split('°')[0]),
-              longitude: -1 * Number(attraction.location.long.split('°')[0])
+              latitude: attraction.location.lat,
+              longitude: attraction.location.long,
             }}
             title={attraction.name}
-            description={attraction.description}
-          >
+            description={attraction.description}>
             <View style={styles.markerContainer}>
               <Text style={styles.emoji}>{attraction.emoji}</Text>
             </View>

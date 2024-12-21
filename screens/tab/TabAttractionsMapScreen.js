@@ -9,6 +9,7 @@ import React, {useState, useRef} from 'react';
 import MapView, {Marker, PROVIDER_DEFAULT, Polyline} from 'react-native-maps';
 import {ATTRACTIONS} from '../../data/attractions';
 import {LAS_VEGAS_REGION} from '../../data/initialLocation';
+import {CustomRoute} from '../../data/polylineData';
 
 const TOKEN =
   'pk.eyJ1IjoidmFjaGVrbWFwMSIsImEiOiJjbTR3cHdkZXgwN2xxMmtyMHpkM3J1Ymc4In0.MQ2PHgJ_geG0AdbhlelR2Q';
@@ -105,6 +106,7 @@ const TabAttractionsMapScreen = () => {
         {route && (
           <Polyline
             coordinates={route}
+            // coordinates={route}
             strokeColor="#2196F3"
             strokeWidth={3}
             zIndex={1} // Make sure route is visible above the map

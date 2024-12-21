@@ -84,8 +84,8 @@ export const ATTRACTIONS = [
     id: 6,
     name: "The Venetian Gondola Rides",
     location: {
-      lat: "36.1211° N",
-      long: "-115.1696° W"
+      lat: "36.1212121211° N",
+      long: "-115.17271162169715° W"
     },
     images: [
       "venetian-canals.jpg",
@@ -180,7 +180,7 @@ export const ATTRACTIONS = [
     id: 12,
     name: "Caesar's Palace Forum Shops",
     location: {
-      lat: "36.1178° N",
+      lat: "36.116703102205° N",
       long: "-115.1756° W"
     },
     images: [

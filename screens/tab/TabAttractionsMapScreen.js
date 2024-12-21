@@ -4,9 +4,8 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
-
 } from 'react-native';
-import React, {useState, useRef,useEffect} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import MapView, {Marker, PROVIDER_DEFAULT, Polyline} from 'react-native-maps';
 import {ATTRACTIONS} from '../../data/attractions';
 import {LAS_VEGAS_REGION} from '../../data/initialLocation';
@@ -21,9 +20,9 @@ const TabAttractionsMapScreen = () => {
   const [startPoint, setStartPoint] = useState(null);
   const [endPoint, setEndPoint] = useState(null);
   const [route, setRoute] = useState(null);
-  console.log(route && route?.length);
-//   const [routeKey, setRouteKey] = useState(0);
+  //   const [routeKey, setRouteKey] = useState(0);
   const [isRouteReady, setIsRouteReady] = useState(true);
+  const [routeDetails, setRouteDetails] = useState(null);
 
   useEffect(() => {
     if (route?.length > 0) {
@@ -55,32 +54,38 @@ const TabAttractionsMapScreen = () => {
       const data = await response.json();
 
       if (data.routes && data.routes[0]) {
+        console.log('data', data);
+        console.log(data.routes[0].distance, 'distance');
+        console.log(data.routes[0].duration, 'duration');
+        console.log(data.routes[0].legs[0].weight, 'legs');
+        console.log(data.routes[0].legs[0].summary, 'legs');
+
         const routeCoordinates = data.routes[0].geometry.coordinates.map(
           coord => ({
             latitude: coord[1],
             longitude: coord[0],
           }),
         );
-        
-        console.log('Setting route with coordinates:', routeCoordinates);
+
+        // console.log('Setting route with coordinates:', routeCoordinates);
         setRoute(routeCoordinates);
         // setRouteKey(prev => prev + 1);
 
         // Fit the map to show the entire route
         setTimeout(() => {
-            if (mapRef.current && routeCoordinates.length > 0) {
-              mapRef.current.fitToCoordinates(routeCoordinates, {
-                edgePadding: {
-                  top: 100,
-                  right: 100,
-                  bottom: 100,
-                  left: 100,
-                },
-                animated: true,
-              });
-            }
-          }, 100);
-        }
+          if (mapRef.current && routeCoordinates.length > 0) {
+            mapRef.current.fitToCoordinates(routeCoordinates, {
+              edgePadding: {
+                top: 100,
+                right: 100,
+                bottom: 100,
+                left: 100,
+              },
+              animated: true,
+            });
+          }
+        }, 100);
+      }
     } catch (error) {
       console.error('Error fetching route:', error);
     }
@@ -142,18 +147,22 @@ const TabAttractionsMapScreen = () => {
           />
         )}
 
-
         {/* Route markers on top */}
         {startPoint && (
           <Marker
             coordinate={startPoint}
             pinColor="green"
-            title="Start"
+            title="Start Point"
             zIndex={2}
           />
         )}
         {endPoint && (
-          <Marker coordinate={endPoint} pinColor="red" title="End" zIndex={2} />
+          <Marker
+            coordinate={endPoint}
+            pinColor="red"
+            title="End Point"
+            zIndex={2}
+          />
         )}
 
         {/* Your existing attraction markers */}

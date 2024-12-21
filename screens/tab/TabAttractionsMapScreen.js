@@ -9,6 +9,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import MapView, {Marker, PROVIDER_DEFAULT, Polyline} from 'react-native-maps';
 import {ATTRACTIONS} from '../../data/attractions';
 import {LAS_VEGAS_REGION} from '../../data/initialLocation';
+import Geolocation from 'react-native-geolocation-service';
 import {CustomRoute} from '../../data/polylineData';
 
 const TOKEN =
@@ -23,6 +24,15 @@ const TabAttractionsMapScreen = () => {
   //   const [routeKey, setRouteKey] = useState(0);
   const [isRouteReady, setIsRouteReady] = useState(true);
   const [routeDetails, setRouteDetails] = useState(null);
+  const [isBuildRoute, setIsBuildRoute] = useState(false);
+  
+
+  useEffect(() => {
+    const initMap = async () => {
+      await checkLocationPermission();
+    };
+    initMap();
+  }, []);
 
   useEffect(() => {
     if (route?.length > 0) {
@@ -30,7 +40,26 @@ const TabAttractionsMapScreen = () => {
     }
   }, [route]);
 
+  const checkLocationPermission = async () => {
+    try {
+      const granted = await Geolocation.requestAuthorization('whenInUse');
+      if (granted === 'granted') {
+        // await getCurrentLocation();
+        console.log('Request granted');
+        setIsBuildRoute(true);
+      } else {
+        console.log('Request denied');
+        // showLocationPermissionDialog();
+      }
+
+    } catch (err) {
+      console.warn(err);
+      //   showLocationPermissionDialog();
+    }
+  };
+
   const handleMapPress = async event => {
+    console.log('Map pressed in routing mode:', event.nativeEvent);
     if (isRoutingMode) {
       const {coordinate} = event.nativeEvent;
       console.log('Map pressed in routing mode:', coordinate);

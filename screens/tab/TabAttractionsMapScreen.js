@@ -4,8 +4,9 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
+
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef,useEffect} from 'react';
 import MapView, {Marker, PROVIDER_DEFAULT, Polyline} from 'react-native-maps';
 import {ATTRACTIONS} from '../../data/attractions';
 import {LAS_VEGAS_REGION} from '../../data/initialLocation';
@@ -20,6 +21,15 @@ const TabAttractionsMapScreen = () => {
   const [startPoint, setStartPoint] = useState(null);
   const [endPoint, setEndPoint] = useState(null);
   const [route, setRoute] = useState(null);
+  console.log(route && route?.length);
+//   const [routeKey, setRouteKey] = useState(0);
+  const [isRouteReady, setIsRouteReady] = useState(true);
+
+  useEffect(() => {
+    if (route?.length > 0) {
+      setIsRouteReady(true);
+    }
+  }, [route]);
 
   const handleMapPress = async event => {
     if (isRoutingMode) {
@@ -51,22 +61,26 @@ const TabAttractionsMapScreen = () => {
             longitude: coord[0],
           }),
         );
+        
         console.log('Setting route with coordinates:', routeCoordinates);
         setRoute(routeCoordinates);
+        // setRouteKey(prev => prev + 1);
 
         // Fit the map to show the entire route
-        if (mapRef.current && routeCoordinates.length > 0) {
-          mapRef.current.fitToCoordinates([start, end], {
-            edgePadding: {
-              top: 50,
-              right: 50,
-              bottom: 50,
-              left: 50,
-            },
-            animated: true,
-          });
+        setTimeout(() => {
+            if (mapRef.current && routeCoordinates.length > 0) {
+              mapRef.current.fitToCoordinates(routeCoordinates, {
+                edgePadding: {
+                  top: 100,
+                  right: 100,
+                  bottom: 100,
+                  left: 100,
+                },
+                animated: true,
+              });
+            }
+          }, 100);
         }
-      }
     } catch (error) {
       console.error('Error fetching route:', error);
     }
@@ -103,17 +117,31 @@ const TabAttractionsMapScreen = () => {
           console.log('Marker pressed:', event.nativeEvent)
         }>
         {/* Draw the route first (before markers) */}
-        {route && (
+
+        {/* {route  && (
           <Polyline
+            key={routeKey}
             coordinates={route}
             // coordinates={route}
             strokeColor="#2196F3"
             strokeWidth={3}
-            zIndex={1} // Make sure route is visible above the map
+            lineDashPattern={[0]}
+            zIndex={99} // Make sure route is visible above the map
             tappable={true} // Make route interactive
             onPress={() => console.log('Route pressed')} // For debugging
           />
+        )} */}
+        {isRouteReady && (
+          <Polyline
+            coordinates={route}
+            strokeColor="#2196F3"
+            strokeWidth={5}
+            lineDashPattern={[1, 7]}
+            zIndex={99}
+            tappable={true}
+          />
         )}
+
 
         {/* Route markers on top */}
         {startPoint && (

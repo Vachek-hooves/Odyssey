@@ -69,6 +69,7 @@ const TabAttractionsMapScreen = () => {
 
         // console.log('Setting route with coordinates:', routeCoordinates);
         setRoute(routeCoordinates);
+        setRouteDetails(data.routes[0]);
         // setRouteKey(prev => prev + 1);
 
         // Fit the map to show the entire route

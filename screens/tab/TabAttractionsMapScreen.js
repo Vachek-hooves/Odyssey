@@ -25,11 +25,12 @@ const TabAttractionsMapScreen = () => {
   const [isRouteReady, setIsRouteReady] = useState(true);
   const [routeDetails, setRouteDetails] = useState(null);
   const [isBuildRoute, setIsBuildRoute] = useState(false);
-  
+  const [hasLocationPermission, setHasLocationPermission] = useState(false);
 
   useEffect(() => {
     const initMap = async () => {
-      await checkLocationPermission();
+      const permissionGranted = await checkLocationPermission();
+      setHasLocationPermission(permissionGranted);
     };
     initMap();
   }, []);
@@ -46,14 +47,16 @@ const TabAttractionsMapScreen = () => {
       if (granted === 'granted') {
         // await getCurrentLocation();
         console.log('Request granted');
-        setIsBuildRoute(true);
+        // setIsBuildRoute(true);
+        return true;
       } else {
         console.log('Request denied');
         // showLocationPermissionDialog();
+        return false;
       }
-
     } catch (err) {
       console.warn(err);
+      return false;
       //   showLocationPermissionDialog();
     }
   };
@@ -120,6 +123,17 @@ const TabAttractionsMapScreen = () => {
       console.error('Error fetching route:', error);
     }
   };
+
+  const NoLocation = () => {
+    return (
+      <View style={styles.noLocation}>
+        <Text style={styles.noLocationText}>
+          You are have not enabled location permission
+        </Text>
+      </View>
+    );
+  };
+  
   const startRouting = () => {
     setIsRoutingMode(true);
     setStartPoint(null);
@@ -151,6 +165,7 @@ const TabAttractionsMapScreen = () => {
         onMarkerPress={event =>
           console.log('Marker pressed:', event.nativeEvent)
         }>
+        {/* {hasLocationPermission ? null : <RetryConnection />} */}
         {/* Draw the route first (before markers) */}
 
         {/* {route  && (
@@ -213,25 +228,29 @@ const TabAttractionsMapScreen = () => {
       </MapView>
       {/* Routing controls */}
       <View style={styles.buttonContainer}>
-        {!isRoutingMode ? (
-          <TouchableOpacity style={styles.button} onPress={startRouting}>
-            <Text style={styles.buttonText}>Build Route</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.routingControls}>
-            <Text style={styles.routingText}>
-              {!startPoint
-                ? 'Select start point'
-                : !endPoint
-                ? 'Select end point'
-                : 'Route created!'}
-            </Text>
-            <TouchableOpacity
-              style={[styles.button, styles.cancelButton]}
-              onPress={cancelRouting}>
-              <Text style={styles.buttonText}>Cancel</Text>
+        {hasLocationPermission ? (
+          !isRoutingMode ? (
+            <TouchableOpacity style={styles.button} onPress={startRouting}>
+              <Text style={styles.buttonText}>Build Route</Text>
             </TouchableOpacity>
-          </View>
+          ) : (
+            <View style={styles.routingControls}>
+              <Text style={styles.routingText}>
+                {!startPoint
+                  ? 'Select start point'
+                  : !endPoint
+                  ? 'Select end point'
+                  : 'Route created!'}
+              </Text>
+              <TouchableOpacity
+                style={[styles.button, styles.cancelButton]}
+                onPress={cancelRouting}>
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          )
+        ) : (
+          <NoLocation />
         )}
       </View>
     </View>
@@ -306,5 +325,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  noLocation: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 10,
+    borderRadius: 10,
+  },
+  noLocationText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
   },
 });

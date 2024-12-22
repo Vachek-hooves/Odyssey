@@ -168,6 +168,10 @@ const TabAttractionsMapScreen = () => {
     setRoute(null);
   };
 
+  const navigateToLasVegas = () => {
+    mapRef.current?.animateToRegion(LAS_VEGAS_REGION, 1000); // 1000ms animation duration
+  };
+
   return (
     <View style={styles.container}>
       <MapView
@@ -246,6 +250,14 @@ const TabAttractionsMapScreen = () => {
           </Marker>
         ))}
       </MapView>
+      {/* Add Las Vegas button */}
+      <TouchableOpacity 
+        style={styles.lasVegasButton} 
+        onPress={navigateToLasVegas}
+      >
+        <Text style={styles.lasVegasButtonText}>🎆</Text>
+      </TouchableOpacity>
+
       {/* Routing controls */}
       <View style={styles.buttonContainer}>
         {hasLocationPermission ? (
@@ -361,5 +373,27 @@ const styles = StyleSheet.create({
   retryButton: {
     backgroundColor: '#4CAF50', // Green color for the retry button
     marginTop: 10,
+  },
+  lasVegasButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#2196F3',
+    borderRadius: 30,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  lasVegasButtonText: {
+    fontSize: 24,
   },
 });

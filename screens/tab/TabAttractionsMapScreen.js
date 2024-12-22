@@ -4,6 +4,7 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import MapView, {Marker, PROVIDER_DEFAULT, Polyline} from 'react-native-maps';
@@ -124,16 +125,35 @@ const TabAttractionsMapScreen = () => {
     }
   };
 
+  const requestLocationPermission = async () => {
+    const permissionGranted = await checkLocationPermission();
+    setHasLocationPermission(permissionGranted);
+  };
+
+  const openSettings = () => {
+    Linking.openSettings(); // This will open the device settings
+  };
+
   const NoLocation = () => {
     return (
       <View style={styles.noLocation}>
         <Text style={styles.noLocationText}>
           You are have not enabled location permission
         </Text>
+        {/* <TouchableOpacity
+          style={[styles.button, styles.retryButton]}
+          onPress={requestLocationPermission}>
+          <Text style={styles.buttonText}>Request Permission</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, styles.retryButton]}
+          onPress={openSettings}>
+          <Text style={styles.buttonText}>Open Settings</Text>
+        </TouchableOpacity> */}
       </View>
     );
   };
-  
+
   const startRouting = () => {
     setIsRoutingMode(true);
     setStartPoint(null);
@@ -310,6 +330,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   cancelButton: {
     backgroundColor: '#FF5252',
@@ -336,5 +357,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
+  },
+  retryButton: {
+    backgroundColor: '#4CAF50', // Green color for the retry button
+    marginTop: 10,
   },
 });

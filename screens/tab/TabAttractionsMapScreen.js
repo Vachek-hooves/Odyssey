@@ -23,6 +23,7 @@ import Geolocation from 'react-native-geolocation-service';
 import {CustomRoute} from '../../data/polylineData';
 import LinearGradient from 'react-native-linear-gradient';
 import {useAppContext} from '../../store/context';
+import {SpotNotice} from '../../components/MapScreenComponents';
 
 const TOKEN =
   'pk.eyJ1IjoidmFjaGVrbWFwMSIsImEiOiJjbTR3cHdkZXgwN2xxMmtyMHpkM3J1Ymc4In0.MQ2PHgJ_geG0AdbhlelR2Q';
@@ -229,6 +230,9 @@ const TabAttractionsMapScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <SpotNotice />
+      
+
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -328,9 +332,11 @@ const TabAttractionsMapScreen = ({navigation}) => {
               <View style={styles.calloutContainer}>
                 <Text style={styles.calloutTitle}>{spot.name}</Text>
                 {spot.description && (
-                  <Text style={styles.calloutDescription}>{spot.description}</Text>
+                  <Text style={styles.calloutDescription}>
+                    {spot.description}
+                  </Text>
                 )}
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.deleteButton}
                   onPress={e => {
                     e.stopPropagation();
@@ -399,8 +405,24 @@ const TabAttractionsMapScreen = ({navigation}) => {
 
             <View style={styles.emojiSelector}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                
-                {['📍', '🎯', '⭐', '🎪', '🎭', '🎡', '🎢', '🎨', '🎰', '🍽️', '🏛️', '🏰', '🌟', '💫', '🌺', '🌴'].map(emoji => (
+                {[
+                  '📍',
+                  '🎯',
+                  '⭐',
+                  '🎪',
+                  '🎭',
+                  '🎡',
+                  '🎢',
+                  '🎨',
+                  '🎰',
+                  '🍽️',
+                  '🏛️',
+                  '🏰',
+                  '🌟',
+                  '💫',
+                  '🌺',
+                  '🌴',
+                ].map(emoji => (
                   <TouchableOpacity
                     key={emoji}
                     onPress={() => setNewSpot(prev => ({...prev, emoji}))}
@@ -749,7 +771,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 8,
     textShadowColor: '#00ff00',
-    textShadowOffset: { width: 1, height: 1 },
+    textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 3,
   },
   calloutDescription: {
@@ -770,4 +792,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
   },
+ 
 });

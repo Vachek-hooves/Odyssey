@@ -91,11 +91,13 @@ const StackAttracktionDetailsScreen = ({route, navigation}) => {
           <View style={styles.header}>
             <Text style={styles.emoji}>{attraction.emoji}</Text>
             <Text style={styles.title}>{attraction.name}</Text>
-            <LinearGradient
-              colors={['#FFD700', '#FFA500']}
-              style={styles.ratingContainer}>
-              <Text style={styles.rating}>★ {attraction.rating}</Text>
-            </LinearGradient>
+            <View style={{}}>
+              <LinearGradient
+                colors={['#FFD700', '#FFA500']}
+                style={styles.ratingContainer}>
+                <Text style={styles.rating}>★ {attraction.rating}</Text>
+              </LinearGradient>
+            </View>
           </View>
 
           <LinearGradient
@@ -177,6 +179,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginBottom: 25,
+    paddingTop: 100,
   },
   emoji: {
     fontSize: 70,
@@ -194,11 +197,13 @@ const styles = StyleSheet.create({
     textShadowRadius: 5,
   },
   ratingContainer: {
+    marginLeft: 20,
+    marginRight: 20,
     backgroundColor: '#FFD700',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    // paddingHorizontal: 16,
+    // paddingVertical: 8,
     borderRadius: 20,
-    marginTop: 10,
+    // marginTop: 10,
     shadowColor: '#FFD700',
     shadowOffset: {
       width: 0,
@@ -207,14 +212,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 4,
+    marginTop: 20,
   },
   rating: {
+    padding: 10,
     fontSize: 18,
     fontWeight: 'bold',
     color: '#1a1a1a',
   },
   locationContainer: {
-    marginBottom: 25,
+    // marginBottom: 25,
     padding: 20,
     borderRadius: 15,
     borderWidth: 1,
@@ -238,6 +245,7 @@ const styles = StyleSheet.create({
     opacity: 0.95,
   },
   descriptionContainer: {
+    paddingHorizontal: 20,
     marginBottom: 50,
   },
   descriptionTitle: {

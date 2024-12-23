@@ -5,6 +5,7 @@ import {
   TabAttractionsMapScreen,
   TabHotelsScreen,
   TabPolylineCreate,
+  TabQRScreen,
 } from '../screens/tab';
 import TabFavoriteScreen from '../screens/tab/TabFavoriteScreen';
 
@@ -16,10 +17,11 @@ const TabNavigation = () => {
         name="TabAttractionMapScreen"
         component={TabAttractionsMapScreen}
       />
-      <Tab.Screen name="TabPolyline" component={TabPolylineCreate} />
-      {/* <Tab.Screen name="TabTouristScreen" component={TabTouristScreen} /> */}
+      {/* <Tab.Screen name="TabPolyline" component={TabPolylineCreate} /> */}
+      <Tab.Screen name="TabTouristScreen" component={TabTouristScreen} />
       {/* <Tab.Screen name="TabHotelsScreen" component={TabHotelsScreen} /> */}
       <Tab.Screen name="TabFavoriteScreen" component={TabFavoriteScreen} />
+      <Tab.Screen name="TabQRScreen" component={TabQRScreen} />
     </Tab.Navigator>
   );
 };

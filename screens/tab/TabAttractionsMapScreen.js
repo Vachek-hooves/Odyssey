@@ -125,14 +125,14 @@ const TabAttractionsMapScreen = () => {
     }
   };
 
-  const requestLocationPermission = async () => {
-    const permissionGranted = await checkLocationPermission();
-    setHasLocationPermission(permissionGranted);
-  };
+//   const requestLocationPermission = async () => {
+//     const permissionGranted = await checkLocationPermission();
+//     setHasLocationPermission(permissionGranted);
+//   };
 
-  const openSettings = () => {
-    Linking.openSettings(); // This will open the device settings
-  };
+//   const openSettings = () => {
+//     Linking.openSettings(); // This will open the device settings
+//   };
 
   const NoLocation = () => {
     return (

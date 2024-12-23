@@ -1,29 +1,37 @@
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import QRCode from 'react-native-qrcode-svg';
+import LinearGradient from 'react-native-linear-gradient';
 import QrCode from '../../components/Lottie/QrCode';
 
 const TabQRScreen = () => {
   const [qrValue, setQrValue] = useState('User Saved name');
 
   return (
-    <View style={styles.container}>
-      <View style={styles.qrContainer}>
-        <QRCode
-          value={qrValue}
-          size={200}
-          backgroundColor="white"
-          color="black"
-        />
+    <LinearGradient colors={['#2B3467', '#1a1f3c']} style={styles.container}>
+      <View style={styles.gradientContainer}>
+        {/* <LinearGradient colors={['#1a1f3c', '#2B3467']} style={styles.qrContainer}> */}
+        <View style={styles.qrContainer}>
+          <QRCode
+            value={qrValue}
+            size={200}
+            backgroundColor="white"
+            color="black"
+          />
+        </View>
+        {/* </LinearGradient> */}
       </View>
+
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Enter text what you found in secret spot</Text>
+        <Text style={styles.label}>
+          Enter text what you found in secret spot
+        </Text>
         <TextInput
           style={styles.input}
           onChangeText={setQrValue}
           value={qrValue}
           placeholder="Enter text here"
-          placeholderTextColor="#666"
+          placeholderTextColor="rgba(255,255,255,0.5)"
         />
       </View>
 
@@ -31,9 +39,8 @@ const TabQRScreen = () => {
         The QR code updates automatically as you type
       </Text>
 
-      
       <QrCode />
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -42,26 +49,33 @@ export default TabQRScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1E1E1E',
-    padding: 20,
+    // padding: 20,
     alignItems: 'center',
   },
+  gradientContainer: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 80,
+  },
   qrContainer: {
-    marginTop: 50,
-    padding: 20,
-    backgroundColor: '#2D2D2D',
+    // padding: 20,
     borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 8,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 4,
+    // },
+    // shadowOpacity: 0.3,
+    // shadowRadius: 5,
+    // elevation: 8,
+    borderWidth: 1,
+    borderColor: '#00ff00',
+    overflow: 'hidden',
+    padding:4
   },
   inputContainer: {
-    width: '100%',
+    width: '90%',
     marginTop: 40,
   },
   label: {
@@ -69,21 +83,28 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     color: '#FFFFFF',
     fontWeight: '600',
+    textShadowColor: '#00ff00',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 10,
   },
   input: {
     width: '100%',
     height: 50,
     borderWidth: 1,
-    borderColor: '#3D3D3D',
+    borderColor: '#00ff00',
     borderRadius: 12,
     paddingHorizontal: 15,
     fontSize: 16,
-    backgroundColor: '#2D2D2D',
+    backgroundColor: 'rgba(255,255,255,0.1)',
     color: '#FFFFFF',
   },
   helperText: {
     marginTop: 20,
-    color: '#9E9E9E',
+    color: '#FFFFFF',
     fontSize: 14,
+    opacity: 0.8,
+    textShadowColor: '#00ff00',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
   },
 });

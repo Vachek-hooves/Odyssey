@@ -69,6 +69,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
 
   const handleMapPress = async event => {
     console.log('Map pressed in routing mode:', event.nativeEvent);
+    
     if (isRoutingMode) {
       const {coordinate} = event.nativeEvent;
       console.log('Map pressed in routing mode:', coordinate);
@@ -291,8 +292,6 @@ const TabAttractionsMapScreen = ({navigation}) => {
               onPress={e => {
                 e.stopPropagation();
                 handleMarkerPress(attraction);
-                // setSelectedAttraction(attraction);
-                // setShowMarkerModal(attraction);
               }}>
               <View style={styles.calloutContainer}>
                 <Text style={styles.calloutTitle}>{attraction.name}</Text>
@@ -300,8 +299,6 @@ const TabAttractionsMapScreen = ({navigation}) => {
                   style={styles.calloutButton}
                   onPress={e=>{
                     e.stopPropagation();
-                    // setSelectedAttraction(attraction);
-                    // setShowMarkerModal(attraction);
                     handleMarkerPress(attraction);
                   }}>
                     <Text style={styles.calloutButtonText}>View Details</Text>

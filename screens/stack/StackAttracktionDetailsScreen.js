@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,12 +9,13 @@ import {
   TouchableOpacity,
   Animated,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import LinearGradient from 'react-native-linear-gradient';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
-const StackAttracktionDetailsScreen = ({ route,navigation }) => {
-  const { attraction } = route.params;
+const StackAttracktionDetailsScreen = ({route, navigation}) => {
+  const {attraction} = route.params;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const insets = useSafeAreaInsets();
@@ -27,11 +28,10 @@ const StackAttracktionDetailsScreen = ({ route,navigation }) => {
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            { useNativeDriver: false }
+            [{nativeEvent: {contentOffset: {x: scrollX}}}],
+            {useNativeDriver: false},
           )}
-          scrollEventThrottle={16}
-        >
+          scrollEventThrottle={16}>
           {attraction.images.map((image, index) => (
             <Image
               key={index}
@@ -41,10 +41,9 @@ const StackAttracktionDetailsScreen = ({ route,navigation }) => {
             />
           ))}
         </ScrollView>
-        <TouchableOpacity 
-          style={[styles.backButton, { top: insets.top + 10 }]} 
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity
+          style={[styles.backButton, {top: insets.top + 10}]}
+          onPress={() => navigation.goBack()}>
           <Text style={styles.backButtonText}>←</Text>
         </TouchableOpacity>
 
@@ -72,10 +71,7 @@ const StackAttracktionDetailsScreen = ({ route,navigation }) => {
             return (
               <Animated.View
                 key={index}
-                style={[
-                  styles.dot,
-                  { width: dotWidth, opacity },
-                ]}
+                style={[styles.dot, {width: dotWidth, opacity}]}
               />
             );
           })}
@@ -86,30 +82,36 @@ const StackAttracktionDetailsScreen = ({ route,navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* <StatusBar barStyle="light-content" /> */}
+      {/* <StatusBar translucent backgroundColor="transparent" /> */}
       <ScrollView bounces={false}>
         {renderImageSlider()}
-        <View style={styles.contentContainer}>
+        <LinearGradient
+          colors={['#2B3A67', '#384B7E']}
+          style={styles.contentContainer}>
           <View style={styles.header}>
             <Text style={styles.emoji}>{attraction.emoji}</Text>
             <Text style={styles.title}>{attraction.name}</Text>
-            <View style={styles.ratingContainer}>
+            <LinearGradient
+              colors={['#FFD700', '#FFA500']}
+              style={styles.ratingContainer}>
               <Text style={styles.rating}>★ {attraction.rating}</Text>
-            </View>
+            </LinearGradient>
           </View>
-          
-          <View style={styles.locationContainer}>
+
+          <LinearGradient
+            colors={['rgba(41, 128, 185, 0.4)', 'rgba(52, 152, 219, 0.4)']}
+            style={styles.locationContainer}>
             <Text style={styles.locationTitle}>📍 Location</Text>
             <Text style={styles.locationText}>
               {attraction.location.lat}, {attraction.location.long}
             </Text>
-          </View>
+          </LinearGradient>
 
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionTitle}>✨ About this place</Text>
             <Text style={styles.descriptionText}>{attraction.description}</Text>
           </View>
-        </View>
+        </LinearGradient>
       </ScrollView>
     </View>
   );
@@ -117,11 +119,10 @@ const StackAttracktionDetailsScreen = ({ route,navigation }) => {
 
 export default StackAttracktionDetailsScreen;
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#2d2d2d',
   },
   sliderContainer: {
     height: 400, // Made taller for more impact
@@ -133,9 +134,9 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    left: 20,
-    width: 40,
-    height: 40,
+    left: 30,
+    width: 50,
+    height: 50,
     borderRadius: 20,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
@@ -166,27 +167,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-  },contentContainer: {
-    padding: 20,
+  },
+  contentContainer: {
+    // padding: 10,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    marginTop: -30,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -5,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 5,
+    marginTop: -35,
   },
   header: {
     alignItems: 'center',
     marginBottom: 25,
   },
   emoji: {
-    fontSize: 50,
+    fontSize: 70,
     marginBottom: 15,
     textShadow: '0px 2px 4px rgba(0,0,0,0.2)',
   },
@@ -194,9 +187,11 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#1a1a1a',
+    color: '#fff',
     marginBottom: 10,
-    textShadow: '0px 1px 2px rgba(0,0,0,0.1)',
+    textShadowColor: '#00ff00',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 5,
   },
   ratingContainer: {
     backgroundColor: '#FFD700',
@@ -217,13 +212,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#1a1a1a',
-  },locationContainer: {
+  },
+  locationContainer: {
     marginBottom: 25,
-    backgroundColor: '#f8f9fa',
     padding: 20,
     borderRadius: 15,
     borderWidth: 1,
-    borderColor: '#e9ecef',
+    borderColor: '#00ff00',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    shadowColor: '#00ff00',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
   },
   locationTitle: {
     fontSize: 20,
@@ -233,11 +233,12 @@ const styles = StyleSheet.create({
   },
   locationText: {
     fontSize: 16,
-    color: '#495057',
+    color: '#fff',
     lineHeight: 24,
+    opacity: 0.95,
   },
   descriptionContainer: {
-    marginBottom: 30,
+    marginBottom: 50,
   },
   descriptionTitle: {
     fontSize: 20,
@@ -248,7 +249,8 @@ const styles = StyleSheet.create({
   descriptionText: {
     fontSize: 16,
     lineHeight: 26,
-    color: '#495057',
+    color: '#fff',
+    opacity: 0.95,
     textAlign: 'justify',
   },
 });

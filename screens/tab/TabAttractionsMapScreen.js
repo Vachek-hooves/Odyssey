@@ -243,7 +243,8 @@ const TabAttractionsMapScreen = () => {
               longitude: attraction.location.long,
             }}
             title={attraction.name}
-            description={attraction.description}>
+            // description={attraction.description}
+            >
             <View style={styles.markerContainer}>
               <Text style={styles.emoji}>{attraction.emoji}</Text>
             </View>
@@ -377,7 +378,7 @@ const styles = StyleSheet.create({
   lasVegasButton: {
     position: 'absolute',
     bottom: 20,
-    right: 20,
+   left: 20,
     backgroundColor: '#2196F3',
     borderRadius: 30,
     width: 50,

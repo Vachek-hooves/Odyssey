@@ -399,7 +399,8 @@ const TabAttractionsMapScreen = ({navigation}) => {
 
             <View style={styles.emojiSelector}>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {['📍', '🎯', '⭐', '🎪', '🎭', '🎡'].map(emoji => (
+                
+                {['📍', '🎯', '⭐', '🎪', '🎭', '🎡', '🎢', '🎨', '🎰', '🍽️', '🏛️', '🏰', '🌟', '💫', '🌺', '🌴'].map(emoji => (
                   <TouchableOpacity
                     key={emoji}
                     onPress={() => setNewSpot(prev => ({...prev, emoji}))}

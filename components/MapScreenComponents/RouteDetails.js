@@ -1,5 +1,6 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {WalkingMan} from '../Lottie';
 
 const RouteDetails = ({routeData, onClose}) => {
   if (!routeData) return null;
@@ -7,7 +8,7 @@ const RouteDetails = ({routeData, onClose}) => {
   return (
     <View style={styles.routeDetailsContainer}>
       <LinearGradient
-        colors={['rgba(43, 52, 103, 0.95)', 'rgba(26, 31, 60, 0.95)']}
+        colors={['rgba(43, 52, 103, 0.75)', 'rgba(26, 31, 60, 0.85)']}
         style={styles.routeDetailsGradient}>
         <View style={styles.routeHeader}>
           <Text style={styles.routeTitle}>Route Details</Text>
@@ -23,6 +24,9 @@ const RouteDetails = ({routeData, onClose}) => {
               <Text style={styles.detailValue}>
                 {(routeData.distance / 1000).toFixed(1)} km
               </Text>
+            </View>
+            <View style={styles.routeDetail}>
+              <WalkingMan />
             </View>
             <View style={styles.routeDetail}>
               <Text style={styles.detailLabel}>Duration</Text>
@@ -85,7 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     // marginBottom: 12,
-    margin:15
+    margin: 15,
   },
   routeTitle: {
     color: '#fff',
@@ -150,7 +154,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
-    margin:5
+    margin: 5,
   },
   arrowContainer: {
     paddingHorizontal: 10,

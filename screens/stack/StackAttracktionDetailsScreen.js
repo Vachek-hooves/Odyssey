@@ -82,38 +82,32 @@ const StackAttracktionDetailsScreen = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* <StatusBar translucent backgroundColor="transparent" /> */}
       <ScrollView bounces={false}>
         {renderImageSlider()}
-        <LinearGradient
-          colors={['#2B3A67', '#384B7E']}
-          style={styles.contentContainer}>
+        <View style={styles.contentContainer}>
+          <View style={styles.ratingContainer}>
+            <Text style={styles.rating}>★ {attraction.rating}</Text>
+          </View>
+
           <View style={styles.header}>
             <Text style={styles.emoji}>{attraction.emoji}</Text>
             <Text style={styles.title}>{attraction.name}</Text>
-            <View style={{}}>
-              <LinearGradient
-                colors={['#FFD700', '#FFA500']}
-                style={styles.ratingContainer}>
-                <Text style={styles.rating}>★ {attraction.rating}</Text>
-              </LinearGradient>
-            </View>
           </View>
 
-          <LinearGradient
-            colors={['rgba(41, 128, 185, 0.4)', 'rgba(52, 152, 219, 0.4)']}
-            style={styles.locationContainer}>
+          <TouchableOpacity style={styles.locationContainer}>
             <Text style={styles.locationTitle}>📍 Location</Text>
             <Text style={styles.locationText}>
-              {attraction.location.lat}, {attraction.location.long}
+              {attraction.streetName || `${attraction.location.lat}, ${attraction.location.long}`}
             </Text>
-          </LinearGradient>
+          </TouchableOpacity>
 
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionTitle}>✨ About this place</Text>
-            <Text style={styles.descriptionText}>{attraction.description}</Text>
+            <Text style={styles.descriptionText}>
+              {attraction.description}
+            </Text>
           </View>
-        </LinearGradient>
+        </View>
       </ScrollView>
     </View>
   );
@@ -124,7 +118,7 @@ export default StackAttracktionDetailsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2d2d2d',
+    backgroundColor: '#2B3467',
   },
   sliderContainer: {
     height: 400, // Made taller for more impact
@@ -171,94 +165,81 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   contentContainer: {
-    // padding: 10,
+    flex: 1,
+    padding: 20,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    marginTop: -35,
+    marginTop: -30,
+    backgroundColor: '#2B3467', // Dark blue background
   },
   header: {
     alignItems: 'center',
-    marginBottom: 25,
-    paddingTop: 100,
+    marginTop: 20,
+    marginBottom: 40, // Increased space between header and content
   },
   emoji: {
-    fontSize: 70,
-    marginBottom: 15,
-    textShadow: '0px 2px 4px rgba(0,0,0,0.2)',
+    fontSize: 70, // Larger emoji
+    marginBottom: 20,
+    alignSelf: 'center',
   },
   title: {
-    fontSize: 28,
+    fontSize: 36,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#fff',
-    marginBottom: 10,
+    marginBottom: 20,
     textShadowColor: '#00ff00',
-    textShadowOffset: {width: 2, height: 2},
+    textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 5,
   },
   ratingContainer: {
-    marginLeft: 20,
-    marginRight: 20,
+    position: 'absolute',
+    top: -35, // Position above the content
+    left: 20,
     backgroundColor: '#FFD700',
-    // paddingHorizontal: 16,
-    // paddingVertical: 8,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
     borderRadius: 20,
-    // marginTop: 10,
-    shadowColor: '#FFD700',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
-    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   rating: {
-    padding: 10,
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#1a1a1a',
+    color: '#000',
   },
   locationContainer: {
-    // marginBottom: 25,
+    marginHorizontal: -20, // Extend full width
     padding: 20,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: '#00ff00',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    shadowColor: '#00ff00',
-    shadowOffset: {width: 0, height: 0},
-    shadowOpacity: 0.5,
-    shadowRadius: 10,
+    backgroundColor: 'rgba(73, 215, 159, 0.2)', // Greenish with opacity
+    marginBottom: 30,
   },
   locationTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#1a1a1a',
-    marginBottom: 8,
+    color: '#000',
+    marginBottom: 5,
   },
   locationText: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#fff',
-    lineHeight: 24,
-    opacity: 0.95,
+    opacity: 0.9,
   },
   descriptionContainer: {
-    paddingHorizontal: 20,
-    marginBottom: 50,
+    marginTop: 20,
   },
   descriptionTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#1a1a1a',
-    marginBottom: 12,
+    color: '#fff',
+    marginBottom: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   descriptionText: {
-    fontSize: 16,
-    lineHeight: 26,
+    fontSize: 18,
+    lineHeight: 28,
     color: '#fff',
-    opacity: 0.95,
-    textAlign: 'justify',
+    opacity: 0.9,
   },
 });

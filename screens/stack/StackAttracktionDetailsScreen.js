@@ -41,11 +41,17 @@ const StackAttracktionDetailsScreen = ({route, navigation}) => {
             />
           ))}
         </ScrollView>
-        <TouchableOpacity
-          style={[styles.backButton, {top: insets.top + 10}]}
-          onPress={() => navigation.goBack()}>
-          <Text style={styles.backButtonText}>←</Text>
-        </TouchableOpacity>
+        <LinearGradient
+          colors={['#2B3A67', '#384BeE']}
+          style={styles.backButton}
+          // style={[styles.backButton, {top: insets.top + 10}]}
+        >
+          <TouchableOpacity
+            // style={[styles.backButton, {top: '15%'}]}
+            onPress={() => navigation.goBack()}>
+            <Text style={styles.backButtonText}>←</Text>
+          </TouchableOpacity>
+        </LinearGradient>
 
         {/* Pagination Dots */}
         <View style={styles.pagination}>
@@ -143,6 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
+    top: '25%',
   },
   backButtonText: {
     color: 'white',

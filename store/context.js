@@ -6,7 +6,6 @@ export const CreateContext = createContext({});
 const CUSTOM_SPOTS_KEY = 'customSpots';
 
 export const AppContext = ({children}) => {
-  const [welcome, setWelcome] = useState('welcome');
   const [customSpots, setCustomSpots] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -86,7 +85,7 @@ export const AppContext = ({children}) => {
   };
 
   const providerValue = {
-    welcome,
+
     customSpots,
     isLoading,
     createCustomSpot,

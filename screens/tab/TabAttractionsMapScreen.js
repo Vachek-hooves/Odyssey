@@ -8,6 +8,7 @@ import {
   Modal,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import MapView, {
@@ -21,13 +22,13 @@ import {LAS_VEGAS_REGION} from '../../data/initialLocation';
 import Geolocation from 'react-native-geolocation-service';
 import {CustomRoute} from '../../data/polylineData';
 import LinearGradient from 'react-native-linear-gradient';
-import { useAppContext } from '../../store/context';
+import {useAppContext} from '../../store/context';
 
 const TOKEN =
   'pk.eyJ1IjoidmFjaGVrbWFwMSIsImEiOiJjbTR3cHdkZXgwN2xxMmtyMHpkM3J1Ymc4In0.MQ2PHgJ_geG0AdbhlelR2Q';
 
 const TabAttractionsMapScreen = ({navigation}) => {
-  const { customSpots, createCustomSpot } = useAppContext();
+  const {customSpots, createCustomSpot, deleteCustomSpot} = useAppContext();
   const mapRef = useRef(null);
   const [isRoutingMode, setIsRoutingMode] = useState(false);
   const [startPoint, setStartPoint] = useState(null);
@@ -43,7 +44,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
     name: '',
     description: '',
     coordinate: null,
-    emoji: '📍'
+    emoji: '📍',
   });
   console.log(newSpot, 'newSpot');
 
@@ -158,7 +159,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
   const handleMapLongPress = event => {
     setNewSpot(prev => ({
       ...prev,
-      coordinate: event.nativeEvent.coordinate
+      coordinate: event.nativeEvent.coordinate,
     }));
     setModalVisible(true);
   };
@@ -170,18 +171,37 @@ const TabAttractionsMapScreen = ({navigation}) => {
     }
 
     const result = await createCustomSpot(newSpot);
-    
+
     if (result.success) {
       setModalVisible(false);
       setNewSpot({
         name: '',
         description: '',
         coordinate: null,
-        emoji: '📍'
+        emoji: '📍',
       });
     } else {
       Alert.alert('Error', 'Failed to create custom spot');
     }
+  };
+
+  const handleDeleteSpot = spotId => {
+    Alert.alert('Delete Spot', 'Are you sure you want to delete this spot?', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          const result = await deleteCustomSpot(spotId);
+          if (!result.success) {
+            Alert.alert('Error', 'Failed to delete spot');
+          }
+        },
+      },
+    ]);
   };
 
   const startRouting = () => {
@@ -290,13 +310,36 @@ const TabAttractionsMapScreen = ({navigation}) => {
         ))}
 
         {customSpots.map(spot => (
-          <Marker
-            key={spot.id}
-            coordinate={spot.coordinate}
-          >
+          <Marker key={spot.id} coordinate={spot.coordinate}>
             <View style={styles.customMarkerContainer}>
-              <Text style={styles.emojiCustom}>{spot.emoji}</Text>
+              <LinearGradient
+                colors={['#2B3467', '#1a1f3c']}
+                style={styles.customMarkerGradient}>
+                {/* <View style={styles.customMarkerContainer}> */}
+                <Text style={styles.emojiCustom}>{spot.emoji}</Text>
+                {/* </View> */}
+              </LinearGradient>
             </View>
+            <Callout
+              onPress={e => {
+                e.stopPropagation();
+                handleDeleteSpot(spot.id);
+              }}>
+              <View style={styles.calloutContainer}>
+                <Text style={styles.calloutTitle}>{spot.name}</Text>
+                {spot.description && (
+                  <Text style={styles.calloutDescription}>{spot.description}</Text>
+                )}
+                <TouchableOpacity 
+                  style={styles.deleteButton}
+                  onPress={e => {
+                    e.stopPropagation();
+                    handleDeleteSpot(spot.id);
+                  }}>
+                  <Text style={styles.deleteButtonText}>Delete Spot</Text>
+                </TouchableOpacity>
+              </View>
+            </Callout>
           </Marker>
         ))}
       </MapView>
@@ -445,8 +488,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
   },
-  emojiCustom:{
-    fontSize: 26,
+  emojiCustom: {
+    fontSize: 28,
+    padding: 8,
   },
   emoji: {
     fontSize: 20,
@@ -608,7 +652,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 24,
-    marginHorizontal:20
+    marginHorizontal: 20,
   },
   emojiOption: {
     width: 44,
@@ -674,5 +718,55 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginLeft: 8,
   },
-
+  //   custom marker
+  customMarkerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  customMarkerGradient: {
+    // width: 44,
+    // height: 44,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#00ff00',
+    borderRadius: 22,
+  },
+  customMarkerEmoji: {
+    fontSize: 24,
+  },
+  calloutContainer: {
+    padding: 12,
+    minWidth: 150,
+    maxWidth: 250,
+    backgroundColor: '#2B3467',
+    borderRadius: 10,
+  },
+  calloutTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 8,
+    textShadowColor: '#00ff00',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
+  },
+  calloutDescription: {
+    fontSize: 14,
+    color: '#fff',
+    marginBottom: 12,
+    opacity: 0.9,
+  },
+  deleteButton: {
+    backgroundColor: '#ff4444',
+    padding: 8,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  deleteButtonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
 });

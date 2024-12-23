@@ -7,7 +7,12 @@ import {
   Linking,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
-import MapView, {Marker, PROVIDER_DEFAULT, Polyline} from 'react-native-maps';
+import MapView, {
+  Marker,
+  PROVIDER_DEFAULT,
+  Polyline,
+  Callout,
+} from 'react-native-maps';
 import {ATTRACTIONS} from '../../data/attractions';
 import {LAS_VEGAS_REGION} from '../../data/initialLocation';
 import Geolocation from 'react-native-geolocation-service';
@@ -16,7 +21,7 @@ import {CustomRoute} from '../../data/polylineData';
 const TOKEN =
   'pk.eyJ1IjoidmFjaGVrbWFwMSIsImEiOiJjbTR3cHdkZXgwN2xxMmtyMHpkM3J1Ymc4In0.MQ2PHgJ_geG0AdbhlelR2Q';
 
-const TabAttractionsMapScreen = () => {
+const TabAttractionsMapScreen = ({navigation}) => {
   const mapRef = useRef(null);
   const [isRoutingMode, setIsRoutingMode] = useState(false);
   const [startPoint, setStartPoint] = useState(null);
@@ -125,13 +130,29 @@ const TabAttractionsMapScreen = () => {
     }
   };
 
-//   const requestLocationPermission = async () => {
-//     const permissionGranted = await checkLocationPermission();
-//     setHasLocationPermission(permissionGranted);
-//   };
+  //   const requestLocationPermission = async () => {
+  //     const permissionGranted = await checkLocationPermission();
+  //     setHasLocationPermission(permissionGranted);
+  //   };
 
-//   const openSettings = () => {
-//     Linking.openSettings(); // This will open the device settings
+  //   const openSettings = () => {
+  //     Linking.openSettings(); // This will open the device settings
+  //   };
+
+//   const handleMarkerPress = attraction => {
+//     // Create a callout with a button
+//     return (
+//       <TouchableOpacity
+//         style={styles.calloutContainer}
+//         onPress={() =>
+//           navigation.navigate('StackAttracktionDetailsScreen', {attraction})
+//         }>
+//         <View>
+//           <Text style={styles.calloutTitle}>{attraction.name}</Text>
+//           <Text style={styles.calloutButton}>View Details →</Text>
+//         </View>
+//       </TouchableOpacity>
+//     );
 //   };
 
   const NoLocation = () => {
@@ -154,6 +175,18 @@ const TabAttractionsMapScreen = () => {
     );
   };
 
+  const CalloutButton = ({attraction}) => {
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('StackAttractionDetails', {attraction})
+        }
+        style={styles.calloutButton}>
+        <Text style={styles.calloutButtonText}>View Details →</Text>
+      </TouchableOpacity>
+    );
+  };
+
   const startRouting = () => {
     setIsRoutingMode(true);
     setStartPoint(null);
@@ -170,6 +203,11 @@ const TabAttractionsMapScreen = () => {
 
   const navigateToLasVegas = () => {
     mapRef.current?.animateToRegion(LAS_VEGAS_REGION, 1000); // 1000ms animation duration
+  };
+
+  const handleMarkerPress = (attraction) => {
+    console.log('Marker pressed:', attraction);
+    // navigation.navigate('StackAttractionDetails', { attraction });
   };
 
   return (
@@ -237,25 +275,46 @@ const TabAttractionsMapScreen = () => {
         {/* Your existing attraction markers */}
         {ATTRACTIONS.map(attraction => (
           <Marker
+          onPress={e => {
+            e.stopPropagation();
+          }}
             key={attraction.id}
             coordinate={{
               latitude: attraction.location.lat,
               longitude: attraction.location.long,
             }}
-            title={attraction.name}
-            // description={attraction.description}
-            >
+            title={attraction.name}>
             <View style={styles.markerContainer}>
               <Text style={styles.emoji}>{attraction.emoji}</Text>
             </View>
+            <Callout
+              onPress={e => {
+                e.stopPropagation();
+                handleMarkerPress(attraction);
+                // setSelectedAttraction(attraction);
+                // setShowMarkerModal(attraction);
+              }}>
+              <View style={styles.calloutContainer}>
+                <Text style={styles.calloutTitle}>{attraction.name}</Text>
+                <TouchableOpacity
+                  style={styles.calloutButton}
+                  onPress={e=>{
+                    e.stopPropagation();
+                    // setSelectedAttraction(attraction);
+                    // setShowMarkerModal(attraction);
+                    handleMarkerPress(attraction);
+                  }}>
+                    <Text style={styles.calloutButtonText}>View Details</Text>
+                  </TouchableOpacity>
+              </View>
+            </Callout>
           </Marker>
         ))}
       </MapView>
       {/* Add Las Vegas button */}
-      <TouchableOpacity 
-        style={styles.lasVegasButton} 
-        onPress={navigateToLasVegas}
-      >
+      <TouchableOpacity
+        style={styles.lasVegasButton}
+        onPress={navigateToLasVegas}>
         <Text style={styles.lasVegasButtonText}>🎆</Text>
       </TouchableOpacity>
 
@@ -361,15 +420,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   noLocation: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    padding: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: 15,
     borderRadius: 10,
+    alignItems: 'center',
   },
   noLocationText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
+    marginBottom: 10,
   },
   retryButton: {
     backgroundColor: '#4CAF50', // Green color for the retry button
@@ -378,7 +439,7 @@ const styles = StyleSheet.create({
   lasVegasButton: {
     position: 'absolute',
     bottom: 20,
-   left: 20,
+    left: 20,
     backgroundColor: '#2196F3',
     borderRadius: 30,
     width: 50,
@@ -396,5 +457,26 @@ const styles = StyleSheet.create({
   },
   lasVegasButtonText: {
     fontSize: 24,
+  },
+  calloutContainer: {
+    padding: 10,
+    width: 200,
+  },
+  calloutTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  calloutButton: {
+    marginTop: 5,
+    padding: 8,
+    backgroundColor: '#2196F3',
+    borderRadius: 5,
+  },
+  calloutButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
   },
 });

@@ -85,27 +85,32 @@ const StackAttracktionDetailsScreen = ({route, navigation}) => {
       <ScrollView bounces={false}>
         {renderImageSlider()}
         <View style={styles.contentContainer}>
-          <View style={styles.ratingContainer}>
+          <LinearGradient
+            colors={['#FFD700', '#FFA500']}
+            style={styles.ratingContainer}>
             <Text style={styles.rating}>★ {attraction.rating}</Text>
-          </View>
+          </LinearGradient>
 
           <View style={styles.header}>
             <Text style={styles.emoji}>{attraction.emoji}</Text>
             <Text style={styles.title}>{attraction.name}</Text>
           </View>
 
-          <TouchableOpacity style={styles.locationContainer}>
+          <LinearGradient
+            colors={['rgba(41, 128, 185, 0.4)', 'rgba(52, 152, 219, 0.4)']}
+            style={styles.locationContainer}>
+            {/* <TouchableOpacity style={styles.locationContainer}> */}
             <Text style={styles.locationTitle}>📍 Location</Text>
             <Text style={styles.locationText}>
-              {attraction.streetName || `${attraction.location.lat}, ${attraction.location.long}`}
+              {attraction.streetName ||
+                `${attraction.location.lat}, ${attraction.location.long}`}
             </Text>
-          </TouchableOpacity>
+            {/* </TouchableOpacity> */}
+          </LinearGradient>
 
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionTitle}>✨ About this place</Text>
-            <Text style={styles.descriptionText}>
-              {attraction.description}
-            </Text>
+            <Text style={styles.descriptionText}>{attraction.description}</Text>
           </View>
         </View>
       </ScrollView>
@@ -175,12 +180,12 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 40, // Increased space between header and content
+    // marginTop: 10,
+    marginBottom: 10, // Increased space between header and content
   },
   emoji: {
-    fontSize: 70, // Larger emoji
-    marginBottom: 20,
+    fontSize: 80, // Larger emoji
+    marginBottom: 10,
     alignSelf: 'center',
   },
   title: {
@@ -188,18 +193,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#fff',
-    marginBottom: 20,
+    marginBottom: 10,
     textShadowColor: '#00ff00',
-    textShadowOffset: { width: 2, height: 2 },
+    textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 5,
   },
   ratingContainer: {
     position: 'absolute',
-    top: -35, // Position above the content
+    top: -25, // Position above the content
     left: 20,
     backgroundColor: '#FFD700',
-    paddingHorizontal: 15,
-    paddingVertical: 8,
+    // paddingHorizontal: 15,
+    // paddingVertical: 8,
     borderRadius: 20,
     flexDirection: 'row',
     alignItems: 'center',
@@ -208,23 +213,34 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#000',
+    paddingVertical: 6,
+    paddingHorizontal: 15,
   },
   locationContainer: {
-    marginHorizontal: -20, // Extend full width
-    padding: 20,
+    marginHorizontal: 10, // Extend full width
+    // padding: 20,
     backgroundColor: 'rgba(73, 215, 159, 0.2)', // Greenish with opacity
     marginBottom: 30,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
   },
   locationTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#000',
-    marginBottom: 5,
+    // marginBottom: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    textAlign: 'center',
   },
   locationText: {
     fontSize: 18,
     color: '#fff',
     opacity: 0.9,
+    textAlign: 'center',
+    paddingVertical: 5,
   },
   descriptionContainer: {
     marginTop: 20,

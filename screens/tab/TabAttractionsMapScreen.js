@@ -24,6 +24,7 @@ import {CustomRoute} from '../../data/polylineData';
 import LinearGradient from 'react-native-linear-gradient';
 import {useAppContext} from '../../store/context';
 import {SpotNotice} from '../../components/MapScreenComponents';
+import RouteDetails from '../../components/MapScreenComponents/RouteDetails';
 
 const TOKEN =
   'pk.eyJ1IjoidmFjaGVrbWFwMSIsImEiOiJjbTR3cHdkZXgwN2xxMmtyMHpkM3J1Ymc4In0.MQ2PHgJ_geG0AdbhlelR2Q';
@@ -41,6 +42,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
   const [isBuildRoute, setIsBuildRoute] = useState(false);
   const [hasLocationPermission, setHasLocationPermission] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [routeData, setRouteData] = useState(null);
   const [newSpot, setNewSpot] = useState({
     name: '',
     description: '',
@@ -109,11 +111,18 @@ const TabAttractionsMapScreen = ({navigation}) => {
       const data = await response.json();
 
       if (data.routes && data.routes[0]) {
-        console.log('data', data);
-        console.log(data.routes[0].distance, 'distance');
-        console.log(data.routes[0].duration, 'duration');
-        console.log(data.routes[0].legs[0].weight, 'legs');
-        console.log(data.routes[0].legs[0].summary, 'legs');
+        setRouteData({
+          distance: data.routes[0].distance,
+          duration: data.routes[0].duration,
+          startStreet: data.routes[0].legs[0].summary.split(' to ')[0],
+          endStreet: data.routes[0].legs[0].summary.split(' to ')[1],
+          geometry: data.routes[0].geometry,
+        });
+        // console.log('data', data);
+        // console.log(data.routes[0].distance, 'distance');
+        // console.log(data.routes[0].duration, 'duration');
+        // console.log(data.routes[0].legs[0].weight, 'legs');
+        // console.log(data.routes[0].legs[0].summary, 'legs');
 
         const routeCoordinates = data.routes[0].geometry.coordinates.map(
           coord => ({
@@ -231,8 +240,12 @@ const TabAttractionsMapScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <SpotNotice />
-      
-
+      {routeData && (
+        <RouteDetails
+          routeData={routeData}
+          onClose={() => setRouteData(null)}
+        />
+      )}
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -384,7 +397,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
               <TouchableOpacity
                 style={[styles.button, styles.cancelButton]}
                 onPress={cancelRouting}>
-                <Text style={styles.buttonText}>Cancel</Text>
+                <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           )
@@ -523,6 +536,14 @@ const styles = StyleSheet.create({
     bottom: 130,
     width: '100%',
     alignItems: 'center',
+  },
+  cancelButtonText: {
+    color: 'red',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 6,
   },
   button: {
     // backgroundColor: '#2196F3',
@@ -792,5 +813,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
   },
- 
 });

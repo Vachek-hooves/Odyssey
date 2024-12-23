@@ -21,11 +21,13 @@ import {LAS_VEGAS_REGION} from '../../data/initialLocation';
 import Geolocation from 'react-native-geolocation-service';
 import {CustomRoute} from '../../data/polylineData';
 import LinearGradient from 'react-native-linear-gradient';
+import { useAppContext } from '../../store/context';
 
 const TOKEN =
   'pk.eyJ1IjoidmFjaGVrbWFwMSIsImEiOiJjbTR3cHdkZXgwN2xxMmtyMHpkM3J1Ymc4In0.MQ2PHgJ_geG0AdbhlelR2Q';
 
 const TabAttractionsMapScreen = ({navigation}) => {
+  const { customSpots, createCustomSpot } = useAppContext();
   const mapRef = useRef(null);
   const [isRoutingMode, setIsRoutingMode] = useState(false);
   const [startPoint, setStartPoint] = useState(null);
@@ -36,14 +38,14 @@ const TabAttractionsMapScreen = ({navigation}) => {
   const [routeDetails, setRouteDetails] = useState(null);
   const [isBuildRoute, setIsBuildRoute] = useState(false);
   const [hasLocationPermission, setHasLocationPermission] = useState(false);
-  const [customSpots, setCustomSpots] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [newSpot, setNewSpot] = useState({
     name: '',
     description: '',
     coordinate: null,
-    emoji: '📍',
+    emoji: '📍'
   });
+  console.log(newSpot, 'newSpot');
 
   useEffect(() => {
     const initMap = async () => {
@@ -156,30 +158,30 @@ const TabAttractionsMapScreen = ({navigation}) => {
   const handleMapLongPress = event => {
     setNewSpot(prev => ({
       ...prev,
-      coordinate: event.nativeEvent.coordinate,
+      coordinate: event.nativeEvent.coordinate
     }));
     setModalVisible(true);
   };
 
-  const handleCreateSpot = () => {
+  const handleCreateSpot = async () => {
     if (!newSpot.name.trim()) {
       Alert.alert('Error', 'Please enter a name for your spot');
       return;
     }
 
-    const spot = {
-      id: `custom-${Date.now()}`,
-      ...newSpot,
-    };
-
-    setCustomSpots(prev => [...prev, spot]);
-    setModalVisible(false);
-    setNewSpot({
-      name: '',
-      description: '',
-      coordinate: null,
-      emoji: '📍',
-    });
+    const result = await createCustomSpot(newSpot);
+    
+    if (result.success) {
+      setModalVisible(false);
+      setNewSpot({
+        name: '',
+        description: '',
+        coordinate: null,
+        emoji: '📍'
+      });
+    } else {
+      Alert.alert('Error', 'Failed to create custom spot');
+    }
   };
 
   const startRouting = () => {
@@ -284,6 +286,17 @@ const TabAttractionsMapScreen = ({navigation}) => {
                 </TouchableOpacity>
               </View>
             </Callout>
+          </Marker>
+        ))}
+
+        {customSpots.map(spot => (
+          <Marker
+            key={spot.id}
+            coordinate={spot.coordinate}
+          >
+            <View style={styles.customMarkerContainer}>
+              <Text style={styles.emojiCustom}>{spot.emoji}</Text>
+            </View>
           </Marker>
         ))}
       </MapView>
@@ -424,6 +437,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  customMarkerContainer: {
+    backgroundColor: 'green',
+    borderRadius: 20,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  emojiCustom:{
+    fontSize: 26,
   },
   emoji: {
     fontSize: 20,
@@ -651,4 +674,5 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginLeft: 8,
   },
+
 });

@@ -17,6 +17,7 @@ import {ATTRACTIONS} from '../../data/attractions';
 import {LAS_VEGAS_REGION} from '../../data/initialLocation';
 import Geolocation from 'react-native-geolocation-service';
 import {CustomRoute} from '../../data/polylineData';
+import LinearGradient from 'react-native-linear-gradient';
 
 const TOKEN =
   'pk.eyJ1IjoidmFjaGVrbWFwMSIsImEiOiJjbTR3cHdkZXgwN2xxMmtyMHpkM3J1Ymc4In0.MQ2PHgJ_geG0AdbhlelR2Q';
@@ -69,7 +70,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
 
   const handleMapPress = async event => {
     console.log('Map pressed in routing mode:', event.nativeEvent);
-    
+
     if (isRoutingMode) {
       const {coordinate} = event.nativeEvent;
       console.log('Map pressed in routing mode:', coordinate);
@@ -140,21 +141,21 @@ const TabAttractionsMapScreen = ({navigation}) => {
   //     Linking.openSettings(); // This will open the device settings
   //   };
 
-//   const handleMarkerPress = attraction => {
-//     // Create a callout with a button
-//     return (
-//       <TouchableOpacity
-//         style={styles.calloutContainer}
-//         onPress={() =>
-//           navigation.navigate('StackAttracktionDetailsScreen', {attraction})
-//         }>
-//         <View>
-//           <Text style={styles.calloutTitle}>{attraction.name}</Text>
-//           <Text style={styles.calloutButton}>View Details →</Text>
-//         </View>
-//       </TouchableOpacity>
-//     );
-//   };
+  //   const handleMarkerPress = attraction => {
+  //     // Create a callout with a button
+  //     return (
+  //       <TouchableOpacity
+  //         style={styles.calloutContainer}
+  //         onPress={() =>
+  //           navigation.navigate('StackAttracktionDetailsScreen', {attraction})
+  //         }>
+  //         <View>
+  //           <Text style={styles.calloutTitle}>{attraction.name}</Text>
+  //           <Text style={styles.calloutButton}>View Details →</Text>
+  //         </View>
+  //       </TouchableOpacity>
+  //     );
+  //   };
 
   const NoLocation = () => {
     return (
@@ -206,9 +207,9 @@ const TabAttractionsMapScreen = ({navigation}) => {
     mapRef.current?.animateToRegion(LAS_VEGAS_REGION, 1000); // 1000ms animation duration
   };
 
-  const handleMarkerPress = (attraction) => {
+  const handleMarkerPress = attraction => {
     console.log('Marker pressed:', attraction);
-    navigation.navigate('StackAttracktionDetailsScreen', { attraction });
+    navigation.navigate('StackAttracktionDetailsScreen', {attraction});
   };
 
   return (
@@ -276,9 +277,9 @@ const TabAttractionsMapScreen = ({navigation}) => {
         {/* Your existing attraction markers */}
         {ATTRACTIONS.map(attraction => (
           <Marker
-          onPress={e => {
-            e.stopPropagation();
-          }}
+            onPress={e => {
+              e.stopPropagation();
+            }}
             key={attraction.id}
             coordinate={{
               latitude: attraction.location.lat,
@@ -297,31 +298,39 @@ const TabAttractionsMapScreen = ({navigation}) => {
                 <Text style={styles.calloutTitle}>{attraction.name}</Text>
                 <TouchableOpacity
                   style={styles.calloutButton}
-                  onPress={e=>{
+                  onPress={e => {
                     e.stopPropagation();
                     handleMarkerPress(attraction);
                   }}>
-                    <Text style={styles.calloutButtonText}>View Details</Text>
-                  </TouchableOpacity>
+                  <Text style={styles.calloutButtonText}>View Details</Text>
+                </TouchableOpacity>
               </View>
             </Callout>
           </Marker>
         ))}
       </MapView>
       {/* Add Las Vegas button */}
-      <TouchableOpacity
-        style={styles.lasVegasButton}
-        onPress={navigateToLasVegas}>
-        <Text style={styles.lasVegasButtonText}>🎆</Text>
-      </TouchableOpacity>
+      <LinearGradient
+        colors={['#2B3467', '#1a1f3c']}
+        style={styles.lasVegasButton}>
+        <TouchableOpacity
+          //   style={styles.lasVegasButton}
+          onPress={navigateToLasVegas}>
+          <Text style={styles.lasVegasButtonText}>🎆</Text>
+        </TouchableOpacity>
+      </LinearGradient>
 
       {/* Routing controls */}
       <View style={styles.buttonContainer}>
         {hasLocationPermission ? (
           !isRoutingMode ? (
-            <TouchableOpacity style={styles.button} onPress={startRouting}>
-              <Text style={styles.buttonText}>Build Route</Text>
-            </TouchableOpacity>
+            <LinearGradient
+              colors={['#2B3467', '#1a1f3c']}
+              style={styles.button}>
+              <TouchableOpacity onPress={startRouting}>
+                <Text style={styles.buttonText}>Build Route</Text>
+              </TouchableOpacity>
+            </LinearGradient>
           ) : (
             <View style={styles.routingControls}>
               <Text style={styles.routingText}>
@@ -377,14 +386,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 130,
     width: '100%',
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#2196F3',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    // backgroundColor: '#2196F3',
+    // paddingHorizontal: 20,
+    // paddingVertical: 10,
     borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: {
@@ -397,9 +406,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 6,
   },
   cancelButton: {
     backgroundColor: '#FF5252',
@@ -435,12 +446,12 @@ const styles = StyleSheet.create({
   },
   lasVegasButton: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 120,
     left: 20,
     backgroundColor: '#2196F3',
     borderRadius: 30,
-    width: 50,
-    height: 50,
+    // width: 50,
+    // height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
@@ -451,9 +462,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    borderRadius: 50,
   },
   lasVegasButtonText: {
-    fontSize: 24,
+    fontSize: 32,
+    padding: 10,
   },
   calloutContainer: {
     padding: 10,

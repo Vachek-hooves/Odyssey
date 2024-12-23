@@ -207,7 +207,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
 
   const handleMarkerPress = (attraction) => {
     console.log('Marker pressed:', attraction);
-    // navigation.navigate('StackAttractionDetails', { attraction });
+    navigation.navigate('StackAttracktionDetailsScreen', { attraction });
   };
 
   return (

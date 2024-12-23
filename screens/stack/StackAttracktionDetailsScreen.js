@@ -58,7 +58,7 @@ const StackAttracktionDetailsScreen = ({route, navigation}) => {
 
             const dotWidth = scrollX.interpolate({
               inputRange,
-              outputRange: [8, 24, 8],
+              outputRange: [8, 34, 8],
               extrapolate: 'clamp',
             });
 
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    marginBottom: 25,
   },
   contentContainer: {
     flex: 1,

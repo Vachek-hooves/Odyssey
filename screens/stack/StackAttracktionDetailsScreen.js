@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
+import CustomQR from '../../components/UI/CustomQR';
 
 const {width} = Dimensions.get('window');
 
@@ -119,6 +120,8 @@ const StackAttracktionDetailsScreen = ({route, navigation}) => {
             <Text style={styles.descriptionText}>{attraction.description}</Text>
           </View>
         </View>
+        <CustomQR />
+        <View style={{height: 60}} />
       </ScrollView>
     </View>
   );

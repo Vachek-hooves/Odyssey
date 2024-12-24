@@ -8,7 +8,7 @@ const TabQRScreen = () => {
   const [qrValue, setQrValue] = useState('Enter pass key here');
 
   return (
-    <LinearGradient colors={['#2B3467', '#1a1f3c']} style={styles.container}>
+    <LinearGradient colors={['rgba(81, 20, 175, 0.8)','rgba(255, 41, 117, 0.8)']} style={styles.container}>
       <View style={styles.gradientContainer}>
         <CustomQR />
       </View>

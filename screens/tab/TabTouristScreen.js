@@ -13,6 +13,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'react-native-image-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
+import LogIn from '../../components/Lottie/LogIn';
 
 const USER_STORAGE_KEY = 'userData';
 
@@ -115,7 +116,8 @@ const TabTouristScreen = () => {
     <ScrollView
       style={styles.scrollView}
       contentContainerStyle={styles.formContainer}
-      keyboardShouldPersistTaps="handled">
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}>
       <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
         <View style={styles.imageWrapper}>
           {image ? (
@@ -165,11 +167,15 @@ const TabTouristScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
       </View>
+      <LogIn />
+      <View style={{height: 250}} />
     </ScrollView>
   );
 
   const renderProfile = () => (
-    <View style={styles.profileContainer}>
+    <ScrollView
+      // style={styles.profileContainer}
+      contentContainerStyle={styles.profileContainer}>
       <View style={styles.imageContainer}>
         <LinearGradient
           colors={['#FF2975', '#5114AF']}
@@ -212,7 +218,8 @@ const TabTouristScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
       </View>
-    </View>
+      <LogIn />
+    </ScrollView>
   );
 
   return (
@@ -226,6 +233,7 @@ const TabTouristScreen = () => {
       <View style={styles.contentContainer}>
         {user && !isEditing ? renderProfile() : renderProfileForm()}
       </View>
+     
     </View>
   );
 };
@@ -249,10 +257,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   formContainer: {
-    flexGrow: 1,
+    flex: 1,
     alignItems: 'center',
-    paddingTop: 60,
-    paddingBottom: 40,
+    paddingTop: 70,
   },
   imageContainer: {
     marginTop: 60,

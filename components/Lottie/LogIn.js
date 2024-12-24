@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import LottieView from 'lottie-react-native';
 
 const LogIn = () => {
@@ -16,7 +16,8 @@ export default LogIn;
 
 const styles = StyleSheet.create({
   lottie: {
-    width: '100%',
-    height: '40%',
+    width: '80%',
+    height: '30%',
+    marginTop: 40,
   },
 });

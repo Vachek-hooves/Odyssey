@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TextInput} from 'react-native';
+import {StyleSheet, Text, View, TextInput, ScrollView} from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import QrCode from '../../components/Lottie/QrCode';
@@ -8,29 +8,33 @@ const TabQRScreen = () => {
   const [qrValue, setQrValue] = useState('Enter pass key here');
 
   return (
-    <LinearGradient colors={['rgba(81, 20, 175, 0.8)','rgba(255, 41, 117, 0.8)']} style={styles.container}>
-      <View style={styles.gradientContainer}>
-        <CustomQR />
-      </View>
+    <LinearGradient
+      colors={['rgba(81, 20, 175, 0.8)', 'rgba(255, 41, 117, 0.8)']}
+      style={styles.container}>
+      <ScrollView style={{flexGrow: 1, height: '100%'}}>
+        <View style={styles.gradientContainer}>
+          <CustomQR />
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>
-          Enter text what you found in secret spot
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>
+            Enter text what you found in secret spot
+          </Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={setQrValue}
+            value={qrValue}
+            placeholder="Enter text here"
+            placeholderTextColor="rgba(255,255,255,0.5)"
+          />
+        </View>
+
+        <Text style={styles.helperText}>
+          The QR code updates automatically as you type
         </Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setQrValue}
-          value={qrValue}
-          placeholder="Enter text here"
-          placeholderTextColor="rgba(255,255,255,0.5)"
-        />
-      </View>
 
-      <Text style={styles.helperText}>
-        The QR code updates automatically as you type
-      </Text>
-
-      <QrCode />
+        <QrCode />
+      </ScrollView>
     </LinearGradient>
   );
 };

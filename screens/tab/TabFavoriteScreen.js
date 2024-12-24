@@ -105,7 +105,7 @@ const TabFavoriteScreen = () => {
     <LinearGradient 
       colors={['#1a0033', '#330066']} 
       style={styles.container}>
-      <Text style={styles.headerTitle}>My Favorite Spots</Text>
+      <Text style={styles.headerTitle}>Favorite Spots</Text>
       <FlatList
         data={favoriteSpots}
         renderItem={renderSpotCard}
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: '70%',
+    height: '102%',
   },
   contentContainer: {
     padding: 15,

@@ -1,15 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  Text,
-  TouchableOpacity,
-  Linking,
-  Modal,
-  TextInput,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Alert} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import MapView, {
   Marker,
@@ -20,11 +9,15 @@ import MapView, {
 import {ATTRACTIONS} from '../../data/attractions';
 import {LAS_VEGAS_REGION} from '../../data/initialLocation';
 import Geolocation from 'react-native-geolocation-service';
-import {CustomRoute} from '../../data/polylineData';
 import LinearGradient from 'react-native-linear-gradient';
 import {useAppContext} from '../../store/context';
-import {SpotNotice} from '../../components/MapScreenComponents';
+import {
+  CustomSpotModal,
+  RoutingControls,
+  SpotNotice,
+} from '../../components/MapScreenComponents';
 import RouteDetails from '../../components/MapScreenComponents/RouteDetails';
+import LasVegasButton from '../../components/MapScreenComponents/LasVegasButton';
 
 const TOKEN =
   'pk.eyJ1IjoidmFjaGVrbWFwMSIsImEiOiJjbTR3cHdkZXgwN2xxMmtyMHpkM3J1Ymc4In0.MQ2PHgJ_geG0AdbhlelR2Q';
@@ -39,7 +32,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
   //   const [routeKey, setRouteKey] = useState(0);
   const [isRouteReady, setIsRouteReady] = useState(true);
   const [routeDetails, setRouteDetails] = useState(null);
-  const [isBuildRoute, setIsBuildRoute] = useState(false);
+  // const [isBuildRoute, setIsBuildRoute] = useState(false);
   const [hasLocationPermission, setHasLocationPermission] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [routeData, setRouteData] = useState(null);
@@ -118,11 +111,6 @@ const TabAttractionsMapScreen = ({navigation}) => {
           endStreet: data.routes[0].legs[0].summary.split(' to ')[1],
           geometry: data.routes[0].geometry,
         });
-        // console.log('data', data);
-        // console.log(data.routes[0].distance, 'distance');
-        // console.log(data.routes[0].duration, 'duration');
-        // console.log(data.routes[0].legs[0].weight, 'legs');
-        // console.log(data.routes[0].legs[0].summary, 'legs');
 
         const routeCoordinates = data.routes[0].geometry.coordinates.map(
           coord => ({
@@ -154,16 +142,6 @@ const TabAttractionsMapScreen = ({navigation}) => {
     } catch (error) {
       console.error('Error fetching route:', error);
     }
-  };
-
-  const NoLocation = () => {
-    return (
-      <View style={styles.noLocation}>
-        <Text style={styles.noLocationText}>
-          You are have not enabled location permission
-        </Text>
-      </View>
-    );
   };
 
   const handleMapLongPress = event => {
@@ -237,6 +215,10 @@ const TabAttractionsMapScreen = ({navigation}) => {
     navigation.navigate('StackAttracktionDetailsScreen', {attraction});
   };
 
+  const handleSpotChange = updatedSpot => {
+    setNewSpot(updatedSpot);
+  };
+
   return (
     <View style={styles.container}>
       <SpotNotice />
@@ -291,7 +273,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
           />
         )}
 
-        {/* Your existing attraction markers */}
+        {/*  existing attraction markers */}
         {ATTRACTIONS.map(attraction => (
           <Marker
             onPress={e => {
@@ -362,130 +344,27 @@ const TabAttractionsMapScreen = ({navigation}) => {
           </Marker>
         ))}
       </MapView>
-      {/* <CustomSpotModal /> */}
+
       {/* Add Las Vegas button */}
-      <LinearGradient
-        colors={['#2B3467', '#1a1f3c']}
-        style={styles.lasVegasButton}>
-        <TouchableOpacity
-          //   style={styles.lasVegasButton}
-          onPress={navigateToLasVegas}>
-          <Text style={styles.lasVegasButtonText}>🎆</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+
+      <LasVegasButton onPress={navigateToLasVegas} />
 
       {/* Routing controls */}
-      <View style={styles.buttonContainer}>
-        {hasLocationPermission ? (
-          !isRoutingMode ? (
-            <LinearGradient
-              colors={['#2B3467', '#1a1f3c']}
-              style={styles.button}>
-              <TouchableOpacity onPress={startRouting}>
-                <Text style={styles.buttonBuildRouteText}>Build Route</Text>
-              </TouchableOpacity>
-            </LinearGradient>
-          ) : (
-            <View style={styles.routingControls}>
-              <Text style={styles.routingText}>
-                {!startPoint
-                  ? 'Select start point'
-                  : !endPoint
-                  ? 'Select end point'
-                  : 'Route created!'}
-              </Text>
-              <TouchableOpacity
-                style={[styles.button, styles.cancelButton]}
-                onPress={cancelRouting}>
-                <Text style={styles.cancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          )
-        ) : (
-          <NoLocation />
-        )}
-      </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
+      <RoutingControls
+        onCancelRouting={cancelRouting}
+        onStartRouting={startRouting}
+        hasLocationPermission={hasLocationPermission}
+        isRoutingMode={isRoutingMode}
+        startPoint={startPoint}
+        endPoint={endPoint}
+      />
+      <CustomSpotModal
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}>
-        <View style={styles.modalOverlay}>
-          <LinearGradient
-            colors={['#2B3467', '#1a1f3c']}
-            style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Create New Spot</Text>
-
-            <View style={styles.emojiSelector}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {[
-                  '📍',
-                  '🎯',
-                  '⭐',
-                  '🎪',
-                  '🎭',
-                  '🎡',
-                  '🎢',
-                  '🎨',
-                  '🎰',
-                  '🍽️',
-                  '🏛️',
-                  '🏰',
-                  '🌟',
-                  '💫',
-                  '🌺',
-                  '🌴',
-                ].map(emoji => (
-                  <TouchableOpacity
-                    key={emoji}
-                    onPress={() => setNewSpot(prev => ({...prev, emoji}))}
-                    style={[
-                      styles.emojiOption,
-                      newSpot.emoji === emoji && styles.selectedEmoji,
-                    ]}>
-                    <Text style={styles.emojiText}>{emoji}</Text>
-                  </TouchableOpacity>
-                ))}
-                <View style={{width: 20}} />
-              </ScrollView>
-            </View>
-
-            <TextInput
-              style={styles.input}
-              placeholder="Spot Name"
-              placeholderTextColor="rgba(255,255,255,0.5)"
-              value={newSpot.name}
-              onChangeText={text => setNewSpot(prev => ({...prev, name: text}))}
-            />
-
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              placeholder="Description (optional)"
-              placeholderTextColor="rgba(255,255,255,0.5)"
-              multiline
-              numberOfLines={4}
-              value={newSpot.description}
-              onChangeText={text =>
-                setNewSpot(prev => ({...prev, description: text}))
-              }
-            />
-
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={() => setModalVisible(false)}>
-                <Text style={styles.buttonText}>Cancel</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.createButton}
-                onPress={handleCreateSpot}>
-                <Text style={styles.buttonText}>Create</Text>
-              </TouchableOpacity>
-            </View>
-          </LinearGradient>
-        </View>
-      </Modal>
+        newSpot={newSpot}
+        onClose={() => setModalVisible(false)}
+        onCreateSpot={handleCreateSpot}
+        onSpotChange={handleSpotChange}
+      />
     </View>
   );
 };
@@ -531,20 +410,20 @@ const styles = StyleSheet.create({
   emoji: {
     fontSize: 20,
   },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 130,
-    width: '100%',
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    color: 'red',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 6,
-  },
+  // buttonContainer: {
+  //   position: 'absolute',
+  //   bottom: 130,
+  //   width: '100%',
+  //   alignItems: 'center',
+  // },
+  // cancelButtonText: {
+  //   color: 'red',
+  //   fontSize: 18,
+  //   fontWeight: 'bold',
+  //   textAlign: 'center',
+  //   paddingHorizontal: 20,
+  //   paddingVertical: 6,
+  // },
   button: {
     // backgroundColor: '#2196F3',
     // paddingHorizontal: 20,
@@ -567,21 +446,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 6,
   },
-  cancelButton: {
-    backgroundColor: '#FF5252',
-    marginTop: 10,
-  },
-  routingControls: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    padding: 10,
-    borderRadius: 10,
-  },
-  routingText: {
-    marginBottom: 10,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+
   noLocation: {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
     padding: 15,
@@ -598,30 +463,6 @@ const styles = StyleSheet.create({
   retryButton: {
     backgroundColor: '#4CAF50', // Green color for the retry button
     marginTop: 10,
-  },
-  lasVegasButton: {
-    position: 'absolute',
-    bottom: 120,
-    left: 20,
-    backgroundColor: '#2196F3',
-    borderRadius: 30,
-    // width: 50,
-    // height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    borderRadius: 50,
-  },
-  lasVegasButtonText: {
-    fontSize: 32,
-    padding: 10,
   },
   calloutContainer: {
     padding: 10,
@@ -644,15 +485,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
   },
-  buttonBuildRouteText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 6,
-  },
-  //   CustomSpotModal
+
   markerContainer: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -664,114 +497,21 @@ const styles = StyleSheet.create({
   markerEmoji: {
     fontSize: 42,
   },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    // paddingHorizontal: 10,
-  },
-  modalContent: {
-    width: '100%',
-    maxWidth: '90%', // Added maxWidth to control modal size
-    // padding: 20,
-    borderRadius: 20,
-    backgroundColor: '#2B3467',
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-    textAlign: 'center',
-    marginBottom: 24,
-    textShadowColor: '#00ff00',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 10,
-    marginVertical: 10,
-    paddingHorizontal: 30,
-  },
-  emojiSelector: {
-    // width: '100%', // Added width
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-    marginHorizontal: 20,
-  },
-  emojiOption: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 5,
-  },
-  selectedEmoji: {
-    backgroundColor: 'rgba(0,255,0,0.2)',
-    borderWidth: 2,
-    borderColor: '#00ff00',
-  },
+
   emojiText: {
     fontSize: 22,
   },
-  input: {
-    // width: '100%', // Ensure input takes full width of parent
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    borderRadius: 15,
-    padding: 15,
-    marginBottom: 16,
-    color: '#fff',
-    borderWidth: 1,
-    borderColor: '#00ff00',
-    fontSize: 16,
-    marginRight: 10,
-    marginLeft: 10,
-    width: '90%',
-  },
+
   textArea: {
     height: 120,
     textAlignVertical: 'top',
   },
-  modalButtons: {
-    // width: '100%', // Added width
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 24,
-    marginBlock: 20,
-    marginHorizontal: 10,
-  },
-  cancelButton: {
-    flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    padding: 15,
-    borderRadius: 15,
-    marginRight: 8,
-  },
-  cancelButton: {
-    flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.15)',
-    padding: 15,
-    borderRadius: 15,
-    marginRight: 8,
-  },
-  createButton: {
-    flex: 1,
-    backgroundColor: '#50C878',
-    padding: 15,
-    borderRadius: 15,
-    marginLeft: 8,
-  },
-  //   custom marker
+
   customMarkerContainer: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   customMarkerGradient: {
-    // width: 44,
-    // height: 44,
-    // alignItems: 'center',
-    // justifyContent: 'center',
     borderWidth: 2,
     borderColor: '#00ff00',
     borderRadius: 22,

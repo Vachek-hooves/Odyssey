@@ -1,25 +1,16 @@
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import React, {useState} from 'react';
-import QRCode from 'react-native-qrcode-svg';
 import LinearGradient from 'react-native-linear-gradient';
 import QrCode from '../../components/Lottie/QrCode';
+import CustomQR from '../../components/UI/CustomQR';
 
 const TabQRScreen = () => {
-  const [qrValue, setQrValue] = useState('User Saved name');
+  const [qrValue, setQrValue] = useState('Enter pass key here');
 
   return (
     <LinearGradient colors={['#2B3467', '#1a1f3c']} style={styles.container}>
       <View style={styles.gradientContainer}>
-        {/* <LinearGradient colors={['#1a1f3c', '#2B3467']} style={styles.qrContainer}> */}
-        <View style={styles.qrContainer}>
-          <QRCode
-            value={qrValue}
-            size={200}
-            backgroundColor="white"
-            color="black"
-          />
-        </View>
-        {/* </LinearGradient> */}
+        <CustomQR />
       </View>
 
       <View style={styles.inputContainer}>
@@ -53,26 +44,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gradientContainer: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
     marginTop: 80,
-  },
-  qrContainer: {
-    // padding: 20,
-    borderRadius: 15,
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 4,
-    // },
-    // shadowOpacity: 0.3,
-    // shadowRadius: 5,
-    // elevation: 8,
-    borderWidth: 1,
-    borderColor: '#00ff00',
-    overflow: 'hidden',
-    padding:4
   },
   inputContainer: {
     width: '90%',

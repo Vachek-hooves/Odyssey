@@ -1,5 +1,5 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, AppState} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   TabAttractionsMapScreen,
@@ -7,10 +7,44 @@ import {
   TabQRScreen,
   TabTouristScreen,
 } from '../screens/tab';
-
+import {useState, useEffect} from 'react';
+import {
+  toggleBackgroundMusic,
+  setupPlayer,
+  pauseBackgroundMusic,
+  playBackgroundMusic,
+} from '../components/SoundSetUp/Sound';
 const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
+  const [isPlayMusic, setIsPlayMusic] = useState(false);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active' && isPlayMusic) {
+        playBackgroundMusic();
+      } else if (nextAppState === 'inactive' || nextAppState === 'background') {
+        pauseBackgroundMusic();
+      }
+    });
+    const initMusic = async () => {
+      await setupPlayer();
+      await playBackgroundMusic();
+      setIsPlayMusic(true);
+    };
+    initMusic();
+
+    return () => {
+      subscription.remove();
+      pauseBackgroundMusic();
+    };
+  }, []);
+
+  const handlePlayMusicToggle = () => {
+    const newState = toggleBackgroundMusic();
+    setIsPlayMusic(newState);
+    // setIsPlayMusic(prev => !prev);
+  };
   return (
     <Tab.Navigator
       screenOptions={{
@@ -191,9 +225,55 @@ const TabNavigation = () => {
           tabBarIconStyle: styles.iconStyle,
         }}
       />
+      <Tab.Screen
+        name="Sound"
+        component={EmptySound}
+        options={{
+          tabBarLabel: ({focused}) => (
+            <Text
+              style={[
+                styles.tabBarLabel,
+                {
+                  color: focused ? '#fff' : 'rgba(255,255,255,0.5)',
+                  textShadowColor: isPlayMusic ? '#00ff00' : 'transparent',
+                  textShadowRadius: isPlayMusic ? 10 : 0,
+                },
+              ]}>
+              Sound
+            </Text>
+          ),
+          tabBarIcon: ({focused}) => (
+            <View style={styles.iconContainer}>
+              <TouchableOpacity onPress={handlePlayMusicToggle}>
+                <Text
+                  style={[
+                    styles.tabBarIcon,
+                    {
+                      color: isPlayMusic ? '#fff' : 'rgba(255,255,255,0.8)',
+                      textShadowColor: isPlayMusic ? '#00ff00' : 'transparent',
+                      textShadowRadius: isPlayMusic ? 10 : 0,
+                    },
+                  ]}>
+                  🔊
+                </Text>
+              </TouchableOpacity>
+              {focused && (
+                <LinearGradient
+                  colors={['#00ff00', '#00cc00']}
+                  style={styles.activeIndicator}
+                />
+              )}
+            </View>
+          ),
+          tabBarIconStyle: styles.iconStyle,
+        }}
+        listeners={{tabPress: e => e.preventDefault()}}
+      />
     </Tab.Navigator>
   );
 };
+
+const EmptySound = () => null;
 
 const styles = StyleSheet.create({
   tabBar: {

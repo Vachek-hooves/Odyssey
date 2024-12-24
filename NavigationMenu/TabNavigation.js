@@ -5,6 +5,7 @@ import {
   TabAttractionsMapScreen,
   TabFavoriteScreen,
   TabQRScreen,
+  TabTouristScreen,
 } from '../screens/tab';
 
 const Tab = createBottomTabNavigator();
@@ -24,6 +25,47 @@ const TabNavigation = () => {
           />
         ),
       }}>
+      <Tab.Screen
+        name="TabTouristScreen"
+        component={TabTouristScreen}
+        options={{
+          tabBarLabel: ({focused, color}) => (
+            <Text
+              style={[
+                styles.tabBarLabel,
+                {
+                  color: focused ? '#fff' : 'rgba(255,255,255,0.5)',
+                  textShadowColor: focused ? '#00ff00' : 'transparent',
+                  textShadowRadius: focused ? 10 : 0,
+                },
+              ]}>
+              Tourist
+            </Text>
+          ),
+          tabBarIcon: ({focused}) => (
+            <View style={styles.iconContainer}>
+              <Text
+                style={[
+                  styles.tabBarIcon,
+                  {
+                    color: focused ? '#fff' : 'rgba(255,255,255,0.5)',
+                    textShadowColor: focused ? '#00ff00' : 'transparent',
+                    textShadowRadius: focused ? 10 : 0,
+                  },
+                ]}>
+                👤
+              </Text>
+              {focused && (
+                <LinearGradient
+                  colors={['#00ff00', '#00cc00']}
+                  style={styles.activeIndicator}
+                />
+              )}
+            </View>
+          ),
+          tabBarIconStyle: styles.iconStyle,
+        }}
+      />
       <Tab.Screen
         name="TabAttractionMapScreen"
         component={TabAttractionsMapScreen}
@@ -121,7 +163,7 @@ const TabNavigation = () => {
                   textShadowRadius: focused ? 10 : 0,
                 },
               ]}>
-             QR
+              QR
             </Text>
           ),
 

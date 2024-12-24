@@ -5,6 +5,7 @@ import TabNavigation from './NavigationMenu/TabNavigation';
 import {
   StackAttracktionDetailsScreen,
   StackCustomPointDetailsScreen,
+  StackWelcomeScreen,
 } from './screens/stack';
 
 const Stack = createNativeStackNavigator();
@@ -14,6 +15,7 @@ function App() {
     <AppContext>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Welcome" component={StackWelcomeScreen} />
           <Stack.Screen name="Tab" component={TabNavigation} />
           <Stack.Screen
             name="StackAttracktionDetailsScreen"

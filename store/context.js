@@ -4,28 +4,84 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const CreateContext = createContext({});
 
 const CUSTOM_SPOTS_KEY = 'customSpots';
+const FAVORITE_SPOTS_KEY = 'favoriteSpots';
 
 export const AppContext = ({children}) => {
   const [customSpots, setCustomSpots] = useState([]);
+  const [favoriteSpots, setFavoriteSpots] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load custom spots from storage on initial render
+  // Load data on initial render
   useEffect(() => {
-    loadCustomSpots();
+    loadInitialData();
   }, []);
 
-  // Load spots from AsyncStorage
-  const loadCustomSpots = async () => {
+  // Load all data from AsyncStorage
+  const loadInitialData = async () => {
     try {
-      const storedSpots = await AsyncStorage.getItem(CUSTOM_SPOTS_KEY);
+      const [storedSpots, storedFavorites] = await Promise.all([
+        AsyncStorage.getItem(CUSTOM_SPOTS_KEY),
+        AsyncStorage.getItem(FAVORITE_SPOTS_KEY),
+      ]);
+
       if (storedSpots) {
         setCustomSpots(JSON.parse(storedSpots));
       }
+      if (storedFavorites) {
+        setFavoriteSpots(JSON.parse(storedFavorites));
+      }
     } catch (error) {
-      console.error('Error loading custom spots:', error);
+      console.error('Error loading data:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Save favorites to AsyncStorage
+  const saveFavoriteSpots = async (updatedFavorites) => {
+    try {
+      await AsyncStorage.setItem(
+        FAVORITE_SPOTS_KEY,
+        JSON.stringify(updatedFavorites),
+      );
+    } catch (error) {
+      console.error('Error saving favorite spots:', error);
+    }
+  };
+
+  // Add spot to favorites
+  const addToFavorites = async (spot) => {
+    try {
+      const spotWithTimestamp = {
+        ...spot,
+        addedToFavoritesAt: new Date().toISOString(),
+      };
+      const updatedFavorites = [...favoriteSpots, spotWithTimestamp];
+      setFavoriteSpots(updatedFavorites);
+      await saveFavoriteSpots(updatedFavorites);
+      return {success: true};
+    } catch (error) {
+      console.error('Error adding to favorites:', error);
+      return {success: false, error: error.message};
+    }
+  };
+
+  // Remove spot from favorites
+  const removeFromFavorites = async (spotId) => {
+    try {
+      const updatedFavorites = favoriteSpots.filter(spot => spot.id !== spotId);
+      setFavoriteSpots(updatedFavorites);
+      await saveFavoriteSpots(updatedFavorites);
+      return {success: true};
+    } catch (error) {
+      console.error('Error removing from favorites:', error);
+      return {success: false, error: error.message};
+    }
+  };
+
+  // Check if spot is in favorites
+  const isSpotFavorite = (spotId) => {
+    return favoriteSpots.some(spot => spot.id === spotId);
   };
 
   // Save spots to AsyncStorage
@@ -85,12 +141,15 @@ export const AppContext = ({children}) => {
   };
 
   const providerValue = {
-
     customSpots,
+    favoriteSpots,
     isLoading,
     createCustomSpot,
     deleteCustomSpot,
     updateCustomSpot,
+    addToFavorites,
+    removeFromFavorites,
+    isSpotFavorite,
   };
 
   return (

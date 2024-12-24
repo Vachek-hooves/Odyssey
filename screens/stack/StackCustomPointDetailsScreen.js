@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,12 +11,33 @@ import {
   Animated,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {useAppContext} from '../../store/context';
 
 const {width} = Dimensions.get('window');
 
 const StackCustomPointDetailsScreen = ({route, navigation}) => {
   const {spot} = route.params;
   const scrollX = useRef(new Animated.Value(0)).current;
+  const {addToFavorites, removeFromFavorites, isSpotFavorite} = useAppContext();
+  const [isFavorite, setIsFavorite] = useState(isSpotFavorite(spot.id));
+
+  const toggleFavorite = async () => {
+    try {
+      if (isFavorite) {
+        const result = await removeFromFavorites(spot.id);
+        if (result.success) {
+          setIsFavorite(false);
+        }
+      } else {
+        const result = await addToFavorites(spot);
+        if (result.success) {
+          setIsFavorite(true);
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  };
 
   const renderImageSlider = () => {
     if (!spot.images || spot.images.length === 0) {
@@ -95,6 +116,19 @@ const StackCustomPointDetailsScreen = ({route, navigation}) => {
               <Text style={styles.backButtonText}>←</Text>
             </TouchableOpacity>
           </LinearGradient>
+          
+          {/* Favorite Button */}
+          <TouchableOpacity
+            style={styles.favoriteButton}
+            onPress={toggleFavorite}>
+            <LinearGradient
+              colors={isFavorite ? ['#FFD700', '#FFA500'] : ['#2B3A67', '#384BeE']}
+              style={styles.favoriteGradient}>
+              <Text style={styles.favoriteButtonText}>
+                {isFavorite ? '★' : '☆'}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.contentContainer}>
@@ -297,6 +331,32 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     textShadowColor: '#00ff00',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
+  },
+  favoriteButton: {
+    position: 'absolute',
+    right: 30,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    zIndex: 10,
+    top: '25%',
+    overflow: 'hidden',
+  },
+  favoriteGradient: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: '#00ff00',
+  },
+  favoriteButtonText: {
+    color: 'white',
+    fontSize: 24,
+    textShadowColor: '#000',
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 3,
   },

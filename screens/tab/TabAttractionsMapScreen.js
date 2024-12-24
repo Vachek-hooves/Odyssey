@@ -275,9 +275,9 @@ const TabAttractionsMapScreen = ({navigation}) => {
 
         {ATTRACTIONS.map(attraction => (
           <Marker
-            onPress={e => {
-              e.stopPropagation();
-            }}
+            // onPress={e => {
+            //   e.stopPropagation();
+            // }}
             key={attraction.id}
             coordinate={{
               latitude: attraction.location.lat,
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
   markerContainer: {
     backgroundColor: 'rgba(26, 0, 51, 0.8)',
     borderRadius: 20,
-    padding: 12,
+    padding: 6,
     borderWidth: 2,
     borderColor: '#FF2975',
     shadowColor: '#FF2975',

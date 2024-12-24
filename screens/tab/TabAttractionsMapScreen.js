@@ -214,9 +214,9 @@ const TabAttractionsMapScreen = ({navigation}) => {
   const handleMarkerPress = (item, isCustomSpot = false) => {
     console.log('Marker pressed:', item);
     if (isCustomSpot) {
-      navigation.navigate('StackCustomPointDetailsScreen', { spot: item });
+      navigation.navigate('StackCustomPointDetailsScreen', {spot: item});
     } else {
-      navigation.navigate('StackAttracktionDetailsScreen', { attraction: item });
+      navigation.navigate('StackAttracktionDetailsScreen', {attraction: item});
     }
   };
 
@@ -243,16 +243,12 @@ const TabAttractionsMapScreen = ({navigation}) => {
         showsCompass={true}
         onPress={handleMapPress}
         followsUserLocation={true}
-        zoomEnabled={true}
-        onPoiClick={event => console.log('POI clicked:', event.nativeEvent)}
-        onMarkerPress={event =>
-          console.log('Marker pressed:', event.nativeEvent)
-        }
-        onLongPress={handleMapLongPress}>
+        onLongPress={handleMapLongPress}
+        zoomEnabled={true}>
         {isRouteReady && (
           <Polyline
             coordinates={route}
-            strokeColor="#2196F3"
+            strokeColor="#FF2975"
             strokeWidth={5}
             lineDashPattern={[1, 7]}
             zIndex={99}
@@ -260,11 +256,10 @@ const TabAttractionsMapScreen = ({navigation}) => {
           />
         )}
 
-        {/* Route markers on top */}
         {startPoint && (
           <Marker
             coordinate={startPoint}
-            pinColor="green"
+            pinColor="#FF2975"
             title="Start Point"
             zIndex={2}
           />
@@ -272,13 +267,12 @@ const TabAttractionsMapScreen = ({navigation}) => {
         {endPoint && (
           <Marker
             coordinate={endPoint}
-            pinColor="red"
+            pinColor="#5114AF"
             title="End Point"
             zIndex={2}
           />
         )}
 
-        {/*  existing attraction markers */}
         {ATTRACTIONS.map(attraction => (
           <Marker
             onPress={e => {
@@ -298,7 +292,9 @@ const TabAttractionsMapScreen = ({navigation}) => {
                 e.stopPropagation();
                 handleMarkerPress(attraction);
               }}>
-              <View style={styles.calloutContainer}>
+              <LinearGradient
+                colors={['#1a0033', '#330066']}
+                style={styles.calloutContainer}>
                 <Text style={styles.calloutTitle}>{attraction.name}</Text>
                 <TouchableOpacity
                   style={styles.calloutButton}
@@ -306,9 +302,13 @@ const TabAttractionsMapScreen = ({navigation}) => {
                     e.stopPropagation();
                     handleMarkerPress(attraction);
                   }}>
-                  <Text style={styles.calloutButtonText}>View Details</Text>
+                  <LinearGradient
+                    colors={['#FF2975', '#FF1493']}
+                    style={styles.calloutButtonGradient}>
+                    <Text style={styles.calloutButtonText}>View Details</Text>
+                  </LinearGradient>
                 </TouchableOpacity>
-              </View>
+              </LinearGradient>
             </Callout>
           </Marker>
         ))}
@@ -317,7 +317,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
           <Marker key={spot.id} coordinate={spot.coordinate}>
             <View style={styles.customMarkerContainer}>
               <LinearGradient
-                colors={['#2B3467', '#1a1f3c']}
+                colors={['#FF2975', '#5114AF']}
                 style={styles.customMarkerGradient}>
                 <Text style={styles.emojiCustom}>{spot.emoji}</Text>
               </LinearGradient>
@@ -327,7 +327,9 @@ const TabAttractionsMapScreen = ({navigation}) => {
                 e.stopPropagation();
                 handleMarkerPress(spot, true);
               }}>
-              <View style={styles.calloutContainer}>
+              <LinearGradient
+                colors={['#1a0033', '#330066']}
+                style={styles.calloutContainer}>
                 <Text style={styles.calloutTitle}>{spot.name}</Text>
                 <TouchableOpacity
                   style={styles.calloutButton}
@@ -335,7 +337,11 @@ const TabAttractionsMapScreen = ({navigation}) => {
                     e.stopPropagation();
                     handleMarkerPress(spot, true);
                   }}>
-                  <Text style={styles.calloutButtonText}>View Details</Text>
+                  <LinearGradient
+                    colors={['#FF2975', '#FF1493']}
+                    style={styles.calloutButtonGradient}>
+                    <Text style={styles.calloutButtonText}>View Details</Text>
+                  </LinearGradient>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.deleteButton}
@@ -343,9 +349,13 @@ const TabAttractionsMapScreen = ({navigation}) => {
                     e.stopPropagation();
                     handleDeleteSpot(spot.id);
                   }}>
-                  <Text style={styles.deleteButtonText}>Delete Spot</Text>
+                  <LinearGradient
+                    colors={['#FF2975', '#FF1493']}
+                    style={styles.deleteButtonGradient}>
+                    <Text style={styles.deleteButtonText}>Delete Spot</Text>
+                  </LinearGradient>
                 </TouchableOpacity>
-              </View>
+              </LinearGradient>
             </Callout>
           </Marker>
         ))}
@@ -380,170 +390,110 @@ export default TabAttractionsMapScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   map: {
-    // width: Dimensions.get('window').width,
-    // height: Dimensions.get('window').height,
     flex: 1,
   },
   markerContainer: {
-    backgroundColor: 'pink',
+    backgroundColor: 'rgba(26, 0, 51, 0.8)',
     borderRadius: 20,
-    // padding: 5,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    padding: 12,
+    borderWidth: 2,
+    borderColor: '#FF2975',
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
     elevation: 5,
   },
   customMarkerContainer: {
-    backgroundColor: 'green',
-    borderRadius: 20,
-    // padding: 5,
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-  emojiCustom: {
-    fontSize: 28,
-    padding: 8,
-  },
-  emoji: {
-    fontSize: 20,
-  },
-  button: {
-    // backgroundColor: '#2196F3',
-    // paddingHorizontal: 20,
-    // paddingVertical: 10,
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    overflow: 'hidden',
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
     elevation: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 6,
-  },
-
-  noLocation: {
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    padding: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  noLocationText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  retryButton: {
-    backgroundColor: '#4CAF50', // Green color for the retry button
-    marginTop: 10,
-  },
-  calloutContainer: {
-    padding: 10,
-    width: 200,
-  },
-  calloutTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  calloutButton: {
-    marginTop: 8,
-    padding: 6,
-    backgroundColor: '#2196F3',
-    borderRadius: 5,
-    marginBottom:12
-  },
-  calloutButtonText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '500',
-    textAlign: 'center',
-  },
-
-  markerContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 40,
-    backgroundColor: 'pink',
-    borderRadius: 50,
-  },
-  markerEmoji: {
-    fontSize: 42,
-  },
-
-  emojiText: {
-    fontSize: 22,
-  },
-
-  textArea: {
-    height: 120,
-    textAlignVertical: 'top',
-  },
-
-  customMarkerContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   customMarkerGradient: {
-    borderWidth: 2,
-    borderColor: '#00ff00',
-    borderRadius: 22,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 23,
   },
-  customMarkerEmoji: {
+  emoji: {
     fontSize: 24,
-  },
-  calloutContainer: {
-    padding: 12,
-    minWidth: 150,
-    maxWidth: 250,
-    backgroundColor: '#2B3467',
-    borderRadius: 10,
-  },
-  calloutTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 8,
-    textShadowColor: '#00ff00',
+    textShadowColor: '#000',
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 3,
   },
-  calloutDescription: {
-    fontSize: 14,
+  emojiCustom: {
+    fontSize: 24,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
+  },
+  calloutContainer: {
+    minWidth: 180,
+    backgroundColor: 'transparent',
+    borderRadius: 15,
+    overflow: 'hidden',
+  },
+  calloutTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 12,
-    opacity: 0.9,
+    textAlign: 'center',
+    marginVertical: 10,
+    paddingHorizontal: 10,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
+  },
+  calloutButton: {
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginBottom: 8,
+  },
+  calloutButtonGradient: {
+    // paddingVertical: 8,
+    // paddingHorizontal: 15,
+    alignItems: 'center',
+    marginHorizontal:6
+  },
+  calloutButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
   },
   deleteButton: {
-    backgroundColor: '#ff4444',
-    padding: 6,
-    borderRadius: 8,
-    marginTop: 8,
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginBottom: 8,
+  },
+  deleteButtonGradient: {
+    // paddingVertical: 8,
+    // paddingHorizontal: 15,
+    alignItems: 'center',
+    marginHorizontal:6
   },
   deleteButtonText: {
     color: '#fff',
-    textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 14,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
   },
 });

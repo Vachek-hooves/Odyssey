@@ -39,18 +39,18 @@ const TabFavoriteScreen = () => {
         style={styles.cardContainer}
         onPress={() => handleSpotPress(item)}>
         <LinearGradient
-          colors={['rgba(43, 52, 103, 0.9)', 'rgba(26, 31, 60, 0.9)']}
+          colors={['rgba(255, 41, 117, 0.9)', 'rgba(81, 20, 175, 0.9)']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
           style={styles.card}>
           <View style={styles.imageContainer}>
             <Image
-              source={
-                typeof spotImage === 'string' ? {uri: spotImage} : spotImage
-              }
+              source={typeof spotImage === 'string' ? {uri: spotImage} : spotImage}
               style={styles.image}
               resizeMode="cover"
             />
             <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.8)']}
+              colors={['transparent', 'rgba(81, 20, 175, 0.95)']}
               style={styles.imageOverlay}
             />
           </View>
@@ -74,7 +74,12 @@ const TabFavoriteScreen = () => {
               <TouchableOpacity
                 style={styles.removeButton}
                 onPress={() => removeFromFavorites(item.id)}>
-                <LinearGradient colors={['#ff4444', '#cc0000']}>
+                <LinearGradient
+                  colors={['#FF2975', '#FF1493']}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 1}}
+                  // style={styles.removeButtonGradient}
+                  >
                   <Text style={styles.removeButtonText}>Remove</Text>
                 </LinearGradient>
               </TouchableOpacity>
@@ -97,7 +102,9 @@ const TabFavoriteScreen = () => {
   }
 
   return (
-    <LinearGradient colors={['#2B3467', '#1a1f3c']} style={styles.container}>
+    <LinearGradient 
+      colors={['#1a0033', '#330066']} 
+      style={styles.container}>
       <Text style={styles.headerTitle}>My Favorite Spots</Text>
       <FlatList
         data={favoriteSpots}
@@ -105,7 +112,7 @@ const TabFavoriteScreen = () => {
         keyExtractor={item => item.id}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
-        ListFooterComponent={<View style={{height: 50}} />}
+        ListFooterComponent={<View style={{height: 90}} />}
       />
     </LinearGradient>
   );
@@ -118,15 +125,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerTitle: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#fff',
     textAlign: 'center',
-    marginTop: '15%',
-    textShadowColor: '#00ff00',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 5,
+    marginTop: 50,
     marginBottom: 20,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 10,
+    fontFamily: 'System',
+    letterSpacing: 1,
   },
   listContainer: {
     paddingHorizontal: width * 0.05,
@@ -135,17 +144,17 @@ const styles = StyleSheet.create({
   cardContainer: {
     marginBottom: 20,
     borderRadius: 15,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    elevation: 8,
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
   },
   card: {
     borderRadius: 15,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#00ff00',
+    borderWidth: 2,
+    borderColor: '#FF2975',
   },
   imageContainer: {
     height: 200,
@@ -160,10 +169,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: '50%',
+    height: '70%',
   },
   contentContainer: {
     padding: 15,
+    backgroundColor: 'rgba(26, 0, 51, 0.3)',
   },
   headerRow: {
     flexDirection: 'row',
@@ -173,21 +183,28 @@ const styles = StyleSheet.create({
   emoji: {
     fontSize: 24,
     marginRight: 10,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-    flex: 1,
-    textShadowColor: '#00ff00',
+    textShadowColor: '#fff',
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 3,
   },
-  description: {
-    fontSize: 14,
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
     color: '#fff',
-    opacity: 0.8,
+    flex: 1,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 5,
+    letterSpacing: 0.5,
+  },
+  description: {
+    fontSize: 16,
+    color: '#fff',
+    opacity: 0.9,
     marginBottom: 10,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
   },
   footer: {
     flexDirection: 'row',
@@ -196,43 +213,62 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   date: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#fff',
-    opacity: 0.6,
+    opacity: 0.8,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
   },
   removeButton: {
-    borderRadius: 8,
+    borderRadius: 20,
     overflow: 'hidden',
+    elevation: 5,
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
   },
-
+  removeButtonGradient: {
+    borderRadius: 20,
+  },
   removeButtonText: {
+    paddingHorizontal: 20,
+    paddingVertical: 8,
     color: '#fff',
     fontSize: 14,
     fontWeight: 'bold',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    letterSpacing: 0.5,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#2B3467',
+    backgroundColor: '#1a0033',
   },
   emptyText: {
-    fontSize: 24,
+    fontSize: 28,
     color: '#fff',
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 10,
-    textShadowColor: '#00ff00',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 3,
+    marginBottom: 15,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 10,
+    letterSpacing: 1,
   },
   emptySubtext: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#fff',
-    opacity: 0.8,
+    opacity: 0.9,
     textAlign: 'center',
     paddingHorizontal: 40,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 5,
+    letterSpacing: 0.5,
   },
 });

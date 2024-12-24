@@ -43,13 +43,11 @@ const StackAttracktionDetailsScreen = ({route, navigation}) => {
           ))}
         </ScrollView>
         <LinearGradient
-          colors={['#2B3A67', '#384BeE']}
-          style={styles.backButton}
-          // style={[styles.backButton, {top: insets.top + 10}]}
-        >
-          <TouchableOpacity
-            // style={[styles.backButton, {top: '15%'}]}
-            onPress={() => navigation.goBack()}>
+          colors={['#FF2975', '#5114AF']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          style={styles.backButton}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
         </LinearGradient>
@@ -88,12 +86,18 @@ const StackAttracktionDetailsScreen = ({route, navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#1a0033', '#330066']}
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 1}}
+      style={styles.container}>
       <ScrollView bounces={false}>
         {renderImageSlider()}
         <View style={styles.contentContainer}>
           <LinearGradient
-            colors={['#FFD700', '#FFA500']}
+            colors={['#FF2975', '#FF1493']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
             style={styles.ratingContainer}>
             <Text style={styles.rating}>★ {attraction.rating}</Text>
           </LinearGradient>
@@ -104,26 +108,26 @@ const StackAttracktionDetailsScreen = ({route, navigation}) => {
           </View>
 
           <LinearGradient
-            colors={['rgba(41, 128, 185, 0.4)', 'rgba(52, 152, 219, 0.4)']}
+            colors={['rgba(255, 41, 117, 0.2)', 'rgba(81, 20, 175, 0.2)']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
             style={styles.locationContainer}>
-            {/* <TouchableOpacity style={styles.locationContainer}> */}
             <Text style={styles.locationTitle}>📍 Location</Text>
             <Text style={styles.locationText}>
               {attraction.streetName ||
                 `${attraction.location.lat}, ${attraction.location.long}`}
             </Text>
-            {/* </TouchableOpacity> */}
           </LinearGradient>
 
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionTitle}>✨ About this place</Text>
             <Text style={styles.descriptionText}>{attraction.description}</Text>
           </View>
-        </View>
-        <CustomQR />
+          <CustomQR />
         <View style={{height: 60}} />
+        </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -132,7 +136,7 @@ export default StackAttracktionDetailsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2B3467',
+    // backgroundColor: '#2B3467',
   },
   sliderContainer: {
     height: 400, // Made taller for more impact
@@ -140,24 +144,31 @@ const styles = StyleSheet.create({
   },
   sliderImage: {
     width: width,
-    height: 400,
+    height: 650,
   },
   backButton: {
     position: 'absolute',
     left: 30,
     width: 50,
     height: 50,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
-    top: '25%',
+    top: '10%',
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
   },
   backButtonText: {
     color: 'white',
     fontSize: 24,
     fontWeight: 'bold',
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
   },
   pagination: {
     flexDirection: 'row',
@@ -168,17 +179,12 @@ const styles = StyleSheet.create({
   dot: {
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#fff',
+    backgroundColor: '#FF2975',
     marginHorizontal: 4,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    marginBottom: 25,
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
   },
   contentContainer: {
     flex: 1,
@@ -186,87 +192,103 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     marginTop: -30,
-    backgroundColor: '#2B3467', // Dark blue background
+    backgroundColor: '#1a0033',
+    borderWidth: 2,
+    borderColor: '#FF2975',
+    borderBottomWidth: 0,
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: -4},
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 5,
   },
   header: {
     alignItems: 'center',
-    // marginTop: 10,
-    marginBottom: 10, // Increased space between header and content
+    marginBottom: 20,
   },
   emoji: {
-    fontSize: 80, // Larger emoji
+    fontSize: 80,
     marginBottom: 10,
-    alignSelf: 'center',
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 5,
   },
   title: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#fff',
     marginBottom: 10,
-    textShadowColor: '#00ff00',
+    textShadowColor: '#FF2975',
     textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 5,
   },
   ratingContainer: {
     position: 'absolute',
-    top: -25, // Position above the content
+    top: -25,
     left: 20,
-    backgroundColor: '#FFD700',
-    // paddingHorizontal: 15,
-    // paddingVertical: 8,
     borderRadius: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
   },
   rating: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#fff',
     paddingVertical: 6,
     paddingHorizontal: 15,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
   },
   locationContainer: {
-    marginHorizontal: 10, // Extend full width
-    // padding: 20,
-    backgroundColor: 'rgba(73, 215, 159, 0.2)', // Greenish with opacity
-    marginBottom: 30,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
+    marginHorizontal: 10,
+    borderRadius: 15,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#FF2975',
   },
   locationTitle: {
+    padding: 10,
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000',
-    // marginBottom: 5,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    textAlign: 'center',
+    color: '#fff',
+    marginBottom: 10,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
   },
   locationText: {
     fontSize: 18,
     color: '#fff',
     opacity: 0.9,
-    textAlign: 'center',
-    paddingVertical: 5,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    padding: 5,
   },
   descriptionContainer: {
-    marginTop: 20,
+    marginTop: 10,
   },
   descriptionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
   },
   descriptionText: {
     fontSize: 18,
     lineHeight: 28,
     color: '#fff',
     opacity: 0.9,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
   },
 });

@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
     // paddingVertical: 8,
     // paddingHorizontal: 15,
     alignItems: 'center',
-    marginHorizontal:6
+    marginHorizontal: 6,
   },
   calloutButtonText: {
     color: '#fff',
@@ -484,7 +484,7 @@ const styles = StyleSheet.create({
     // paddingVertical: 8,
     // paddingHorizontal: 15,
     alignItems: 'center',
-    marginHorizontal:6
+    marginHorizontal: 6,
   },
   deleteButtonText: {
     color: '#fff',

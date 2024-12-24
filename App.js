@@ -2,7 +2,10 @@ import {AppContext} from './store/context';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import TabNavigation from './NavigationMenu/TabNavigation';
-import {StackAttracktionDetailsScreen} from './screens/stack';
+import {
+  StackAttracktionDetailsScreen,
+  StackCustomPointDetailsScreen,
+} from './screens/stack';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +18,10 @@ function App() {
           <Stack.Screen
             name="StackAttracktionDetailsScreen"
             component={StackAttracktionDetailsScreen}
+          />
+          <Stack.Screen
+            name="StackCustomPointDetailsScreen"
+            component={StackCustomPointDetailsScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

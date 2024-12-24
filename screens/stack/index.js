@@ -1,3 +1,3 @@
 import StackAttracktionDetailsScreen from './StackAttracktionDetailsScreen';
-
-export {StackAttracktionDetailsScreen};
+import StackCustomPointDetailsScreen from './StackCustomPointDetailsScreen';
+export {StackAttracktionDetailsScreen, StackCustomPointDetailsScreen};

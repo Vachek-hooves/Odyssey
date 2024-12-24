@@ -22,8 +22,8 @@ export const ATTRACTIONS = [
     id: 2,
     name: 'Fountains of Bellagio',
     location: {
-      lat: '36.1129° N',
-      long: '-115.1765° W',
+      lat: '36.11280239272889° N',
+      long: '-115.17354248906541° W',
     },
     images: [
       require('../assets/image/attractions/Fauntain1.png'),

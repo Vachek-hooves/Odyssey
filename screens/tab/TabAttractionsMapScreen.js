@@ -211,9 +211,13 @@ const TabAttractionsMapScreen = ({navigation}) => {
     mapRef.current?.animateToRegion(LAS_VEGAS_REGION, 1000); // 1000ms animation duration
   };
 
-  const handleMarkerPress = attraction => {
-    console.log('Marker pressed:', attraction);
-    navigation.navigate('StackAttracktionDetailsScreen', {attraction});
+  const handleMarkerPress = (item, isCustomSpot = false) => {
+    console.log('Marker pressed:', item);
+    if (isCustomSpot) {
+      navigation.navigate('StackCustomPointDetailsScreen', { spot: item });
+    } else {
+      navigation.navigate('StackAttracktionDetailsScreen', { attraction: item });
+    }
   };
 
   const handleSpotChange = updatedSpot => {
@@ -315,23 +319,24 @@ const TabAttractionsMapScreen = ({navigation}) => {
               <LinearGradient
                 colors={['#2B3467', '#1a1f3c']}
                 style={styles.customMarkerGradient}>
-                {/* <View style={styles.customMarkerContainer}> */}
                 <Text style={styles.emojiCustom}>{spot.emoji}</Text>
-                {/* </View> */}
               </LinearGradient>
             </View>
             <Callout
               onPress={e => {
                 e.stopPropagation();
-                handleDeleteSpot(spot.id);
+                handleMarkerPress(spot, true);
               }}>
               <View style={styles.calloutContainer}>
                 <Text style={styles.calloutTitle}>{spot.name}</Text>
-                {spot.description && (
-                  <Text style={styles.calloutDescription}>
-                    {spot.description}
-                  </Text>
-                )}
+                <TouchableOpacity
+                  style={styles.calloutButton}
+                  onPress={e => {
+                    e.stopPropagation();
+                    handleMarkerPress(spot, true);
+                  }}>
+                  <Text style={styles.calloutButtonText}>View Details</Text>
+                </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.deleteButton}
                   onPress={e => {
@@ -385,7 +390,7 @@ const styles = StyleSheet.create({
   markerContainer: {
     backgroundColor: 'pink',
     borderRadius: 20,
-    padding: 5,
+    // padding: 5,
     borderWidth: 1,
     borderColor: '#ddd',
     shadowColor: '#000',
@@ -400,7 +405,7 @@ const styles = StyleSheet.create({
   customMarkerContainer: {
     backgroundColor: 'green',
     borderRadius: 20,
-    padding: 10,
+    // padding: 5,
     borderWidth: 1,
     borderColor: '#ddd',
   },
@@ -411,20 +416,6 @@ const styles = StyleSheet.create({
   emoji: {
     fontSize: 20,
   },
-  // buttonContainer: {
-  //   position: 'absolute',
-  //   bottom: 130,
-  //   width: '100%',
-  //   alignItems: 'center',
-  // },
-  // cancelButtonText: {
-  //   color: 'red',
-  //   fontSize: 18,
-  //   fontWeight: 'bold',
-  //   textAlign: 'center',
-  //   paddingHorizontal: 20,
-  //   paddingVertical: 6,
-  // },
   button: {
     // backgroundColor: '#2196F3',
     // paddingHorizontal: 20,
@@ -475,10 +466,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   calloutButton: {
-    marginTop: 5,
-    padding: 8,
+    marginTop: 8,
+    padding: 6,
     backgroundColor: '#2196F3',
     borderRadius: 5,
+    marginBottom:12
   },
   calloutButtonText: {
     color: 'white',
@@ -528,7 +520,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   calloutTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 8,
@@ -544,7 +536,7 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: '#ff4444',
-    padding: 8,
+    padding: 6,
     borderRadius: 8,
     marginTop: 8,
   },

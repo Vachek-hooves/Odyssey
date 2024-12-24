@@ -103,26 +103,36 @@ const StackCustomPointDetailsScreen = ({route, navigation}) => {
   };
 
   return (
-    <LinearGradient colors={['#2B3467', '#1a1f3c']} style={styles.container}>
+    <LinearGradient
+      colors={['#1a0033', '#330066']}
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 1}}
+      style={styles.container}>
       <StatusBar barStyle="light-content" />
 
       <ScrollView bounces={false}>
         <View style={styles.sliderContainer}>
           {renderImageSlider()}
           <LinearGradient
-            colors={['#2B3A67', '#384BeE']}
+            colors={['#FF2975', '#5114AF']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
             style={styles.backButton}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Text style={styles.backButtonText}>←</Text>
             </TouchableOpacity>
           </LinearGradient>
-          
+
           {/* Favorite Button */}
           <TouchableOpacity
             style={styles.favoriteButton}
             onPress={toggleFavorite}>
             <LinearGradient
-              colors={isFavorite ? ['#FFD700', '#FFA500'] : ['#2B3A67', '#384BeE']}
+              colors={
+                isFavorite ? ['#FFD700', '#FFA500'] : ['#FF2975', '#5114AF']
+              }
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}
               style={styles.favoriteGradient}>
               <Text style={styles.favoriteButtonText}>
                 {isFavorite ? '★' : '☆'}
@@ -132,22 +142,35 @@ const StackCustomPointDetailsScreen = ({route, navigation}) => {
         </View>
 
         <View style={styles.contentContainer}>
-          <View style={styles.customSpotBadge}>
-            <Text style={styles.customSpotText}>My Custom Spot</Text>
-          </View>
+          <LinearGradient
+            colors={['#FF2975', '#FF1493']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
+            style={styles.customSpotBadge}>
+            <Text style={styles.customSpotText}>Custom Spot</Text>
+          </LinearGradient>
+
           <View style={styles.headerContainer}>
             <Text style={styles.emoji}>{spot.emoji}</Text>
             <Text style={styles.title}>{spot.name}</Text>
           </View>
 
           {spot.description ? (
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.descriptionTitle}>Description</Text>
+            <LinearGradient
+              colors={['rgba(255, 41, 117, 0.2)', 'rgba(81, 20, 175, 0.2)']}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}
+              style={styles.descriptionContainer}>
+              <Text style={styles.descriptionTitle}>✨ Description</Text>
               <Text style={styles.description}>{spot.description}</Text>
-            </View>
+            </LinearGradient>
           ) : null}
 
-          <View style={styles.locationContainer}>
+          <LinearGradient
+            colors={['rgba(255, 41, 117, 0.2)', 'rgba(81, 20, 175, 0.2)']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
+            style={styles.locationContainer}>
             <Text style={styles.locationTitle}>📍 Location</Text>
             <Text style={styles.locationText}>
               Latitude: {spot.coordinate.latitude.toFixed(6)}
@@ -155,13 +178,8 @@ const StackCustomPointDetailsScreen = ({route, navigation}) => {
             <Text style={styles.locationText}>
               Longitude: {spot.coordinate.longitude.toFixed(6)}
             </Text>
-          </View>
-
-          {/* <TouchableOpacity
-            style={styles.returnToMapButton}
-            onPress={() => navigation.goBack()}>
-            <Text style={styles.returnToMapText}>Return to Map</Text>
-          </TouchableOpacity> */}
+          </LinearGradient>
+        <View style={{height:100}}/>
         </View>
       </ScrollView>
     </LinearGradient>
@@ -180,157 +198,41 @@ const styles = StyleSheet.create({
     width: width,
     height: 400,
   },
+  noImageContainer: {
+    width: width,
+    height: 400,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(26, 0, 51, 0.9)',
+  },
+  noImageText: {
+    color: '#fff',
+    fontSize: 18,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
+  },
   backButton: {
     position: 'absolute',
     left: 30,
     width: 50,
     height: 50,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
-    top: '25%',
+    top: '30%',
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
   },
   backButtonText: {
     color: 'white',
     fontSize: 24,
     fontWeight: 'bold',
-  },
-  pagination: {
-    flexDirection: 'row',
-    position: 'absolute',
-    bottom: 20,
-    alignSelf: 'center',
-  },
-  dot: {
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#fff',
-    marginHorizontal: 4,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    marginBottom: 25,
-  },
-  contentContainer: {
-    flex: 1,
-    padding: 20,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    marginTop: -30,
-    backgroundColor: '#2B3467',
-  },
-  headerContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  emoji: {
-    fontSize: 80,
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-    textAlign: 'center',
-    textShadowColor: '#00ff00',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 10,
-  },
-  descriptionContainer: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#00ff00',
-  },
-  descriptionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 10,
-    textShadowColor: '#00ff00',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 3,
-  },
-  description: {
-    fontSize: 16,
-    color: '#fff',
-    lineHeight: 24,
-  },
-  locationContainer: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#00ff00',
-  },
-  locationTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 10,
-    textShadowColor: '#00ff00',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 3,
-  },
-  locationText: {
-    fontSize: 14,
-    color: '#fff',
-    marginBottom: 5,
-  },
-  customSpotBadge: {
-    backgroundColor: 'rgba(0,255,0,0.2)',
-    padding: 10,
-    borderRadius: 20,
-    alignSelf: 'center',
-    borderWidth: 1,
-    borderColor: '#00ff00',
-    marginBottom: 20,
-  },
-  customSpotText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    textShadowColor: '#00ff00',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 3,
-  },
-  returnToMapButton: {
-    backgroundColor: 'rgba(0,255,0,0.2)',
-    padding: 15,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#00ff00',
-    marginTop: 10,
-  },
-  returnToMapText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    textShadowColor: '#00ff00',
-    textShadowOffset: {width: 1, height: 1},
-    textShadowRadius: 3,
-  },
-  noImageContainer: {
-    width: Dimensions.get('window').width,
-    height: 300,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.1)',
-  },
-  noImageText: {
-    color: '#fff',
-    fontSize: 16,
-    textShadowColor: '#00ff00',
+    textShadowColor: '#000',
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 3,
   },
@@ -341,8 +243,12 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     zIndex: 10,
-    top: '25%',
-    overflow: 'hidden',
+    top: '30%',
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
   },
   favoriteGradient: {
     width: '100%',
@@ -350,8 +256,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 25,
-    borderWidth: 1,
-    borderColor: '#00ff00',
   },
   favoriteButtonText: {
     color: 'white',
@@ -359,6 +263,132 @@ const styles = StyleSheet.create({
     textShadowColor: '#000',
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 3,
+  },
+  pagination: {
+    flexDirection: 'row',
+    position: 'absolute',
+    bottom: 50,
+    alignSelf: 'center',
+  },
+  dot: {
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#FF2975',
+    marginHorizontal: 4,
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    marginTop: -30,
+    backgroundColor: '#1a0033',
+    borderWidth: 2,
+    borderColor: '#FF2975',
+    borderBottomWidth: 0,
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: -4},
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  customSpotBadge: {
+    // paddingVertical: 8,
+    // paddingHorizontal: 16,
+    borderRadius: 20,
+    alignSelf: 'center',
+    marginBottom: 20,
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  customSpotText: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  emoji: {
+    fontSize: 80,
+    marginBottom: 10,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 5,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 5,
+  },
+  descriptionContainer: {
+    // padding: 15,
+    borderRadius: 15,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#FF2975',
+  },
+  descriptionTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 10,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
+    padding: 10,
+  },
+  description: {
+    fontSize: 18,
+    color: '#fff',
+    lineHeight: 28,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    paddingHorizontal: 10,
+  },
+  locationContainer: {
+    // padding: 15,
+    borderRadius: 15,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#FF2975',
+  },
+  locationTitle: {
+    padding: 15,
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 10,
+    textShadowColor: '#FF2975',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
+  },
+  locationText: {
+    fontSize: 18,
+    color: '#fff',
+    marginBottom: 5,
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 2,
+    paddingHorizontal: 10,
   },
 });
 

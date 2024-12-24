@@ -41,6 +41,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
     description: '',
     coordinate: null,
     emoji: '📍',
+    image: [],
   });
   console.log(newSpot, 'newSpot');
 

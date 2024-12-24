@@ -16,8 +16,8 @@ export default LogIn;
 
 const styles = StyleSheet.create({
   lottie: {
-    width: '80%',
-    height: '30%',
+    width: '60%',
+    height: '20%',
     marginTop: 40,
   },
 });

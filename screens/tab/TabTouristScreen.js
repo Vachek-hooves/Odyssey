@@ -133,7 +133,7 @@ const TabTouristScreen = () => {
           )}
         </View>
       </TouchableOpacity>
-
+      <LogIn />
       <View style={styles.formFields}>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>First Name</Text>
@@ -167,15 +167,12 @@ const TabTouristScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
       </View>
-      <LogIn />
-      <View style={{height: 250}} />
+        <View style={{height: 150}} />
     </ScrollView>
   );
 
   const renderProfile = () => (
-    <ScrollView
-      // style={styles.profileContainer}
-      contentContainerStyle={styles.profileContainer}>
+    <ScrollView contentContainerStyle={styles.profileContainer}>
       <View style={styles.imageContainer}>
         <LinearGradient
           colors={['#FF2975', '#5114AF']}
@@ -233,7 +230,6 @@ const TabTouristScreen = () => {
       <View style={styles.contentContainer}>
         {user && !isEditing ? renderProfile() : renderProfileForm()}
       </View>
-     
     </View>
   );
 };
@@ -257,9 +253,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   formContainer: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     paddingTop: 70,
+    height: '120%',
   },
   imageContainer: {
     marginTop: 60,
@@ -348,7 +345,7 @@ const styles = StyleSheet.create({
 
   //  profile
   profileContainer: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     paddingTop: 70,
   },

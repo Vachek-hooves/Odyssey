@@ -94,7 +94,7 @@ const StackCustomPointDetailsScreen = ({route, navigation}) => {
           {spot.images.map((image, index) => (
             <Image
               key={index}
-              source={{uri: image.uri}}
+              source={{uri: image.uri }}
               style={styles.sliderImage}
               resizeMode="cover"
             />

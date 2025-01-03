@@ -28,8 +28,8 @@ const TabFavoriteScreen = () => {
   };
 
   const renderSpotCard = ({item}) => {
-    // const spotImage = item.images?.[0]?.uri || item.image || require('../../assets/images/no-image.png');
-    const spotImage = item.images?.[0]?.uri || item.image || '';
+    const spotImage = item.images?.[0]?.uri || item.image || require('../../assets/image/noImage.png');
+    // const spotImage = item.images?.[0]?.uri || item.image || '';
     const formattedDate = new Date(
       item.addedToFavoritesAt,
     ).toLocaleDateString();

@@ -44,7 +44,9 @@ const TabAttractionsMapScreen = ({navigation}) => {
     emoji: '📍',
     image: [],
   });
-  console.log(newSpot, 'newSpot');
+  // console.log(newSpot, 'newSpot');
+  console.log(customSpots);
+  console.log(coordinatesForSave);
 
   useEffect(() => {
     const initMap = async () => {
@@ -149,8 +151,8 @@ const TabAttractionsMapScreen = ({navigation}) => {
   const handleMapLongPress = event => {
     setNewSpot(prev => ({
       ...prev,
-      coordinate: coordinatesForSave,
-      // coordinate: event.nativeEvent.coordinate,
+      // coordinate: coordinatesForSave,
+      coordinate: event.nativeEvent.coordinate,
     }));
     setModalVisible(true);
   };
@@ -207,6 +209,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
     setStartPoint(null);
     setEndPoint(null);
     setRoute(null);
+    setCoordinatesForSave(null);
   };
 
   const navigateToLasVegas = () => {
@@ -481,6 +484,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     marginBottom: 8,
+    marginTop:10
   },
   deleteButtonGradient: {
     // paddingVertical: 8,

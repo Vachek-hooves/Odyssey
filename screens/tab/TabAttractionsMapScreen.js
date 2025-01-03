@@ -149,9 +149,10 @@ const TabAttractionsMapScreen = ({navigation}) => {
   };
 
   const handleMapLongPress = event => {
+    event.persist();
+    
     setNewSpot(prev => ({
       ...prev,
-      // coordinate: coordinatesForSave,
       coordinate: event.nativeEvent.coordinate,
     }));
     setModalVisible(true);

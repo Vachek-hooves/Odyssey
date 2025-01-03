@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Animated,
+  Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useAppContext} from '../../store/context';
@@ -18,7 +19,7 @@ const {width} = Dimensions.get('window');
 const StackCustomPointDetailsScreen = ({route, navigation}) => {
   const {spot} = route.params;
   const scrollX = useRef(new Animated.Value(0)).current;
-  const {addToFavorites, removeFromFavorites, isSpotFavorite} = useAppContext();
+  const {addToFavorites, removeFromFavorites, isSpotFavorite, deleteCustomSpot} = useAppContext();
   const [isFavorite, setIsFavorite] = useState(isSpotFavorite(spot.id));
 
   const toggleFavorite = async () => {
@@ -37,6 +38,37 @@ const StackCustomPointDetailsScreen = ({route, navigation}) => {
     } catch (error) {
       console.error('Error toggling favorite:', error);
     }
+  };
+
+  const handleDeleteSpot = () => {
+    Alert.alert(
+      'Delete Spot',
+      'Are you sure you want to delete this spot?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const result = await deleteCustomSpot(spot.id);
+              if (result.success) {
+                navigation.goBack();
+              } else {
+                Alert.alert('Error', 'Failed to delete spot');
+              }
+            } catch (error) {
+              console.error('Error deleting spot:', error);
+              Alert.alert('Error', 'Failed to delete spot. Please try again.');
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   const renderImageSlider = () => {
@@ -137,6 +169,19 @@ const StackCustomPointDetailsScreen = ({route, navigation}) => {
               <Text style={styles.favoriteButtonText}>
                 {isFavorite ? '★' : '☆'}
               </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          {/* Delete Button */}
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={handleDeleteSpot}>
+            <LinearGradient
+              colors={['#FF2975', '#5114AF']}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}
+              style={styles.deleteGradient}>
+              <Text style={styles.deleteButtonText}>🗑️</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -389,6 +434,34 @@ const styles = StyleSheet.create({
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 2,
     paddingHorizontal: 10,
+  },
+  deleteButton: {
+    position: 'absolute',
+    right: 30,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    zIndex: 10,
+    top: '55%',
+    shadowColor: '#FF2975',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  deleteGradient: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+  },
+  deleteButtonText: {
+    fontSize: 24,
+    color: 'white',
+    textShadowColor: '#000',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 3,
   },
 });
 

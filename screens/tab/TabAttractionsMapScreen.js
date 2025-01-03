@@ -349,7 +349,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
                     <Text style={styles.calloutButtonText}>View Details</Text>
                   </LinearGradient>
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={styles.deleteButton}
                   onPress={e => {
                     e.stopPropagation();
@@ -360,7 +360,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
                     style={styles.deleteButtonGradient}>
                     <Text style={styles.deleteButtonText}>Delete Spot</Text>
                   </LinearGradient>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </LinearGradient>
             </Callout>
           </Marker>

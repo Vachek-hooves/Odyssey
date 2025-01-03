@@ -2,7 +2,7 @@ workflows:
   odyssey-workflow:
     name: Vegas Voyage An Epic Odyssey
     max_build_duration: 120
-    integration:
+    integrations:
       app_store_connect: OdysseyCodemagicApiKey
     environment:
       ios_signing:

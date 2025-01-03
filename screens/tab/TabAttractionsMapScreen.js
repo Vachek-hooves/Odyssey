@@ -36,6 +36,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
   const [hasLocationPermission, setHasLocationPermission] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [routeData, setRouteData] = useState(null);
+  const [coordinatesForSave, setCoordinatesForSave] = useState(null);
   const [newSpot, setNewSpot] = useState({
     name: '',
     description: '',
@@ -81,9 +82,9 @@ const TabAttractionsMapScreen = ({navigation}) => {
 
   const handleMapPress = async event => {
     console.log('Map pressed in routing mode:', event.nativeEvent);
-
     if (isRoutingMode) {
       const {coordinate} = event.nativeEvent;
+      setCoordinatesForSave(coordinate);
       console.log('Map pressed in routing mode:', coordinate);
 
       if (!startPoint) {
@@ -148,7 +149,8 @@ const TabAttractionsMapScreen = ({navigation}) => {
   const handleMapLongPress = event => {
     setNewSpot(prev => ({
       ...prev,
-      coordinate: event.nativeEvent.coordinate,
+      coordinate: coordinatesForSave,
+      // coordinate: event.nativeEvent.coordinate,
     }));
     setModalVisible(true);
   };
@@ -227,7 +229,7 @@ const TabAttractionsMapScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <SpotNotice />
-      {routeData && (
+      {isRoutingMode && (
         <RouteDetails
           routeData={routeData}
           onClose={() => setRouteData(null)}

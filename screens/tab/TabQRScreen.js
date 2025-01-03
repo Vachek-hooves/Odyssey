@@ -5,7 +5,7 @@ import QrCode from '../../components/Lottie/QrCode';
 import CustomQR from '../../components/UI/CustomQR';
 
 const TabQRScreen = () => {
-  const [qrValue, setQrValue] = useState('Enter pass key here');
+  const [qrValue, setQrValue] = useState('');
 
   return (
     <LinearGradient
@@ -13,7 +13,7 @@ const TabQRScreen = () => {
       style={styles.container}>
       <ScrollView style={{flexGrow: 1, height: '100%'}}>
         <View style={styles.gradientContainer}>
-          <CustomQR />
+          <CustomQR qrValue={qrValue} />
         </View>
 
         <View style={styles.inputContainer}>
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     textShadowColor: '#00ff00',
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 10,
+    textAlign: 'center',
   },
   input: {
     width: '100%',

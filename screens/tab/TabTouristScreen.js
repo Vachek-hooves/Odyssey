@@ -353,6 +353,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     paddingTop: 70,
+    height:'110%'
   },
   imageContainer: {
     marginBottom: 30,

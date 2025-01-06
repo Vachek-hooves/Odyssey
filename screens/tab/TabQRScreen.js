@@ -11,7 +11,7 @@ const TabQRScreen = () => {
     <LinearGradient
       colors={['rgba(81, 20, 175, 0.8)', 'rgba(255, 41, 117, 0.8)']}
       style={styles.container}>
-      <ScrollView style={{flexGrow: 1, height: '100%'}}>
+      <ScrollView contentContainerStyle={{height: '100%'}}>
         <View style={styles.gradientContainer}>
           <CustomQR qrValue={qrValue} />
         </View>
@@ -34,6 +34,7 @@ const TabQRScreen = () => {
         </Text>
 
         <QrCode />
+      <View style={{height:150}}/>
       </ScrollView>
     </LinearGradient>
   );
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gradientContainer: {
-    marginTop: 80,
+    marginTop: 60,
   },
   inputContainer: {
     width: '90%',

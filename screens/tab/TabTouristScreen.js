@@ -7,6 +7,7 @@ import {
   Image,
   Alert,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -14,6 +15,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'react-native-image-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
 import LogIn from '../../components/Lottie/LogIn';
+
+const {height} = Dimensions.get('screen');
+console.log(height);
 
 const USER_STORAGE_KEY = 'userData';
 
@@ -167,7 +171,7 @@ const TabTouristScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
       </View>
-        <View style={{height: 150}} />
+      {/* <View style={{height: 150}} /> */}
     </ScrollView>
   );
 
@@ -246,7 +250,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   contentContainer: {
-    flex: 1,
+    flexGrow: 1,
     zIndex: 1,
   },
   scrollView: {
@@ -256,7 +260,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     paddingTop: 70,
-    height: '120%',
+    // height: '135%',
+    height: height > 680 ? '115%' : '140%',
   },
   imageContainer: {
     marginTop: 60,

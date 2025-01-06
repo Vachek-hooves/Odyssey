@@ -1,8 +1,10 @@
-import {StyleSheet, Text, View, TextInput, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, TextInput, ScrollView,Dimensions} from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import QrCode from '../../components/Lottie/QrCode';
 import CustomQR from '../../components/UI/CustomQR';
+
+const {height} = Dimensions.get('window');
 
 const TabQRScreen = () => {
   const [qrValue, setQrValue] = useState('');
@@ -11,7 +13,7 @@ const TabQRScreen = () => {
     <LinearGradient
       colors={['rgba(81, 20, 175, 0.8)', 'rgba(255, 41, 117, 0.8)']}
       style={styles.container}>
-      <ScrollView contentContainerStyle={{height: '100%'}}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1,height: height > 680 ? '115%' : '140%',}}>
         <View style={styles.gradientContainer}>
           <CustomQR qrValue={qrValue} />
         </View>
@@ -34,7 +36,7 @@ const TabQRScreen = () => {
         </Text>
 
         <QrCode />
-      <View style={{height:150}}/>
+      {/* <View style={{height:150}}/> */}
       </ScrollView>
     </LinearGradient>
   );
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '90%',
-    marginTop: 40,
+    marginTop: 20,
   },
   label: {
     fontSize: 16,
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   helperText: {
-    marginTop: 20,
+    marginTop: 10,
     color: '#FFFFFF',
     fontSize: 14,
     opacity: 0.8,

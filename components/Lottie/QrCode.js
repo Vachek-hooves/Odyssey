@@ -17,6 +17,6 @@ export default QrCode;
 const styles = StyleSheet.create({
   lottie: {
     width: '100%',
-    height: '50%',
+    height: '30%',
   },
 });

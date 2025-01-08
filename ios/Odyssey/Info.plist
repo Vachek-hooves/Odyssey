@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Odyssey</string>
+	<string>Vegas Voyage: An Epic Odyssey</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -33,9 +33,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>App need your location to show you where you are on the map</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>App need your location to show you where you are on the map</string>
+	<string>Your location helps us find nearby attractions and build routes to your selected destinations.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>App need access to camera to take photos of your profile</string>
 	<key>NSPhotoLibraryUsageDescription</key>

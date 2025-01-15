@@ -45,7 +45,7 @@ const StackWelcomeScreen = ({navigation}) => {
 
   return (
     <ImageBackground
-      source={require('../../assets/image/bg1.png')}
+      source={require('../../assets/image/Vegasbg.png')}
       style={styles.backgroundImage}>
       <LinearGradient
         colors={['rgba(26, 0, 51, 0.5)', 'rgba(51, 0, 102, 0.8)']}

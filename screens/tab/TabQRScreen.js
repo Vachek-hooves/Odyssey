@@ -1,8 +1,16 @@
-import {StyleSheet, Text, View, TextInput, ScrollView,Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import QrCode from '../../components/Lottie/QrCode';
 import CustomQR from '../../components/UI/CustomQR';
+import MainLayout from '../../components/layout/MainLayout';
 
 const {height} = Dimensions.get('window');
 
@@ -10,35 +18,42 @@ const TabQRScreen = () => {
   const [qrValue, setQrValue] = useState('');
 
   return (
-    <LinearGradient
-      colors={['rgba(81, 20, 175, 0.8)', 'rgba(255, 41, 117, 0.8)']}
-      style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1,height: height > 680 ? '115%' : '140%',}}>
-        <View style={styles.gradientContainer}>
-          <CustomQR qrValue={qrValue} />
-        </View>
+    <MainLayout>
+      <LinearGradient
+        colors={['rgba(81, 20, 175, 0.0)', 'rgba(255, 41, 117, 0.0)']}
+        style={styles.container}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1,
+            height: height > 680 ? '115%' : '140%',
+          }}>
+          <View style={styles.gradientContainer}>
+            <CustomQR qrValue={qrValue} />
+          </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>
-            Enter text what you found in secret spot
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>
+              Enter text what you found in secret spot
+            </Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={setQrValue}
+              value={qrValue}
+              placeholder="Enter text here"
+              placeholderTextColor="rgba(255,255,255,0.5)"
+            />
+          </View>
+
+          <Text style={styles.helperText}>
+            The QR code updates automatically as you type
           </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={setQrValue}
-            value={qrValue}
-            placeholder="Enter text here"
-            placeholderTextColor="rgba(255,255,255,0.5)"
-          />
-        </View>
 
-        <Text style={styles.helperText}>
-          The QR code updates automatically as you type
-        </Text>
-
-        <QrCode />
-      {/* <View style={{height:150}}/> */}
-      </ScrollView>
-    </LinearGradient>
+          <QrCode />
+          {/* <View style={{height:150}}/> */}
+        </ScrollView>
+      </LinearGradient>
+    </MainLayout>
   );
 };
 

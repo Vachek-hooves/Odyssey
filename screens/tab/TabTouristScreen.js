@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'react-native-image-picker';
 import {launchImageLibrary} from 'react-native-image-picker';
 import LogIn from '../../components/Lottie/LogIn';
+import MainLayout from '../../components/layout/MainLayout';
 
 const {height} = Dimensions.get('screen');
 console.log(height);
@@ -224,17 +225,19 @@ const TabTouristScreen = () => {
   );
 
   return (
-    <View style={styles.mainContainer}>
-      <LinearGradient
-        colors={['#1a0033', '#330066']}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 1}}
-        style={styles.gradientBackground}
-      />
-      <View style={styles.contentContainer}>
-        {user && !isEditing ? renderProfile() : renderProfileForm()}
+    <MainLayout>
+      <View style={styles.mainContainer}>
+        {/* <LinearGradient
+          colors={['#1a0033', '#330066']}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          style={styles.gradientBackground}
+        /> */}
+        <View style={styles.contentContainer}>
+          {user && !isEditing ? renderProfile() : renderProfileForm()}
+        </View>
       </View>
-    </View>
+    </MainLayout>
   );
 };
 
@@ -353,7 +356,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     paddingTop: 70,
-    height:'110%'
+    height: '110%',
   },
   imageContainer: {
     marginBottom: 30,

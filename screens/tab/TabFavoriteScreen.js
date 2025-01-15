@@ -11,6 +11,7 @@ import React from 'react';
 import {useAppContext} from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
+import MainLayout from '../../components/layout/MainLayout';
 
 const {width} = Dimensions.get('window');
 const CARD_WIDTH = width * 0.9;
@@ -28,7 +29,10 @@ const TabFavoriteScreen = () => {
   };
 
   const renderSpotCard = ({item}) => {
-    const spotImage = item.images?.[0]?.uri || item.image || require('../../assets/image/noImage.png');
+    const spotImage =
+      item.images?.[0]?.uri ||
+      item.image ||
+      require('../../assets/image/noImage.png');
     // const spotImage = item.images?.[0]?.uri || item.image || '';
     const formattedDate = new Date(
       item.addedToFavoritesAt,
@@ -45,7 +49,9 @@ const TabFavoriteScreen = () => {
           style={styles.card}>
           <View style={styles.imageContainer}>
             <Image
-              source={typeof spotImage === 'string' ? {uri: spotImage} : spotImage}
+              source={
+                typeof spotImage === 'string' ? {uri: spotImage} : spotImage
+              }
               style={styles.image}
               resizeMode="cover"
             />
@@ -79,7 +85,7 @@ const TabFavoriteScreen = () => {
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 1}}
                   // style={styles.removeButtonGradient}
-                  >
+                >
                   <Text style={styles.removeButtonText}>Remove</Text>
                 </LinearGradient>
               </TouchableOpacity>
@@ -92,19 +98,20 @@ const TabFavoriteScreen = () => {
 
   if (favoriteSpots.length === 0) {
     return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No favorite spots yet</Text>
-        <Text style={styles.emptySubtext}>
-          Add spots to your favorites to see them here
-        </Text>
-      </View>
+      <MainLayout>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No favorite spots yet</Text>
+          <Text style={styles.emptySubtext}>
+            Add spots to your favorites to see them here
+          </Text>
+        </View>
+      </MainLayout>
     );
   }
 
   return (
-    <LinearGradient 
-      colors={['#1a0033', '#330066']} 
-      style={styles.container}>
+    <MainLayout>
+      {/* <LinearGradient colors={['#1a0033', '#330066']} style={styles.container}> */}
       <Text style={styles.headerTitle}>Favorite Spots</Text>
       <FlatList
         data={favoriteSpots}
@@ -114,7 +121,8 @@ const TabFavoriteScreen = () => {
         showsVerticalScrollIndicator={false}
         ListFooterComponent={<View style={{height: 90}} />}
       />
-    </LinearGradient>
+      {/* </LinearGradient> */}
+    </MainLayout>
   );
 };
 
@@ -247,7 +255,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#1a0033',
+    // backgroundColor: '#1a0033',
   },
   emptyText: {
     fontSize: 28,
